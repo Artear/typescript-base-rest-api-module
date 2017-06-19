@@ -1,0 +1,30 @@
+{
+  "port": 8282,
+  "server": {
+    "options": {
+      "name": "Typescript rest API",
+      "version": "0.0.1",
+      "timeout": 5000
+    }
+  },
+  "aws": {
+    "accessKeyId": "",
+    "secretAccessKey": "",
+    "region": "",
+    "dynamodb": {
+      "endpoint": "http://localhost:8000",
+      "timeout": 4000,
+      "maxRetries": 2,
+      "tableName": ""
+    }
+  },
+  "security": {
+    "enable": false,
+    "token": ""
+  },
+  "newrelic": {
+    "enable": false,
+    "license_key": false,
+    "app_name": "typescript-base-rest-api"
+  }
+}

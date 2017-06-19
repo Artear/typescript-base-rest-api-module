@@ -1,0 +1,36 @@
+{
+  "port": "PORT",
+  "aws": {
+    "accessKeyId": "AWS_ACCESS_KEY_ID",
+    "secretAccessKey": "AWS_SECRET_ACCESS_KEY",
+    "region": "AWS_REGION",
+    "dynamodb": {
+      "endpoint": "DYNAMODB_ENDPOINT",
+      "timeout": "DYNAMODB_TIMEOUT",
+      "maxRetries": "DYNAMODB_MAXRETRIES",
+      "tableName": "DYNAMODB_TABLE_NAME"
+    },
+    "cloudwatch": {
+      "logGroupName": "CLOUDWATCH_LOG_GROUP_NAME",
+      "logStreamName": "CLOUDWATCH_LOG_STREAM_NAME"
+    }
+
+  },
+  "external_sources": {
+    "TN": {
+      "url": "TN_EXTERNAL_SOURCE_URL"
+    },
+    "ELTRECE": {
+      "url": "ELTRECE_EXTERNAL_SOURCE_URL"
+    }
+  },
+  "security": {
+    "enable": "SECURITY_ENABLE",
+    "token": "SECURITY_TOKEN"
+  },
+  "newrelic": {
+    "enable": "NEWRELIC_ENABLE",
+    "license_key": "NEWRELIC_LICENSE_KEY",
+    "app_name": "NEWRELIC_APP_NAME"
+  }
+}
