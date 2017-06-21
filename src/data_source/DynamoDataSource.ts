@@ -6,14 +6,14 @@ import * as config from "config";
 export class DynamoDataSource implements DataSource {
 
     private table: string = config.get<string>("aws.dynamodb.tableName");
+    private keyName: string = config.get<string>("aws.dynamodb.keyName");
 
     getData(key: string, fields?: string): Promise<any> {
         const params = {
             TableName: this.table,
-            Key: {
-                "articleId": key
-            }
+            Key: {}
         };
+        params.Key[this.keyName] = key;
 
         if (!!fields) {
             params["ProjectionExpression"] = fields;
@@ -41,7 +41,9 @@ export class DynamoDataSource implements DataSource {
                 if (err) {
                     reject(new InternalServerError("Unable to create item, error: " + err.message));
                 } else {
-                    resolve({"articleId": key});
+                    let response = {};
+                    response[this.keyName] = key;
+                    resolve(response);
                 }
             });
         });
