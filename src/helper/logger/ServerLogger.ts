@@ -1,9 +1,6 @@
 import * as Debug from "debug";
 import {Logger} from "./Logger";
 import * as winston from "winston";
-import * as config from "config";
-
-let CloudWatchTransport = require("winston-cloudwatch");
 
 const debug = Debug(process.env.DEBUG || "server-log");
 
