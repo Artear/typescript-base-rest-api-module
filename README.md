@@ -1,5 +1,6 @@
 # Typescript base REST API module
-
+[![Coverage Status](https://coveralls.io/repos/github/Artear/typescript-base-rest-api-dynamodb-module/badge.svg?branch=master)](https://coveralls.io/github/Artear/typescript-base-rest-api-dynamodb-module?branch=master)
+[![CircleCI](https://circleci.com/gh/Artear/typescript-base-rest-api-dynamodb-module.svg?style=svg)](https://circleci.com/gh/Artear/typescript-base-rest-api-dynamodb-module)
 ### Get started
 
 #### Install and run the server:
