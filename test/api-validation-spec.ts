@@ -16,17 +16,17 @@ chai.use(chaiHttp);
 describe("Services validation test", () => {
 
     let mockedBody: Model.Item;
-    let ArticleServiceGetDataStub;
-    let ArticleServicePutDataStub;
+    let ItemServiceGetDataStub;
+    let ItemServicePutDataStub;
 
     beforeEach(() => {
         mockedBody = mockLoader(itemMock);
-        ArticleServiceGetDataStub = sinon.stub(ItemService.controller, "getItem", function (key: string) {
+        ItemServiceGetDataStub = sinon.stub(ItemService.controller, "getItem", function (key: string) {
             return new Promise((resolve, reject) => {
                 resolve(mockedBody);
             });
         });
-        ArticleServicePutDataStub = sinon.stub(ItemService.controller, "createItem", function (key: string) {
+        ItemServicePutDataStub = sinon.stub(ItemService.controller, "createItem", function (key: string) {
             return new Promise((resolve, reject) => {
                 resolve(mockedBody);
             });
@@ -35,8 +35,8 @@ describe("Services validation test", () => {
 
     afterEach(() => {
         mockedBody = null;
-        ArticleServiceGetDataStub.restore();
-        ArticleServicePutDataStub.restore();
+        ItemServiceGetDataStub.restore();
+        ItemServicePutDataStub.restore();
     });
 
     it("Should return http status UnprocessableEntityError (code 422) because 'itemId' has an invalid format", (done) => {
@@ -162,6 +162,16 @@ describe("Services validation test", () => {
                 res.should.have.status(200);
                 res.body.should.be.a("string");
                 chai.expect(res.body).to.equal("pong");
+                done();
+            });
+    });
+
+    it("GET /items/id should return not found if item doesn't exists", (done) => {
+        ItemServiceGetDataStub.restore();
+        chai.request(server)
+            .get("/items/ab-1234")
+            .end((err, res) => {
+                res.should.have.status(404);
                 done();
             });
     });
