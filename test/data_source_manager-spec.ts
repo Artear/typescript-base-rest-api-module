@@ -5,7 +5,7 @@ import {expect} from "chai";
 import Dictionary from "typescript-collections/dist/lib/Dictionary";
 import {DynamoDB} from "aws-sdk";
 import DocumentClient = DynamoDB.DocumentClient;
-import {NotFoundError} from "restify";
+import {InternalServerError, NotFoundError} from "restify";
 
 class DummySource implements DataSource {
 
@@ -215,5 +215,35 @@ describe("DataSourceManager Test", function () {
                 done();
             });
         });
+    });
+
+    it("Should failed if update fail on main datasource", function (done: Function) {
+        const key = "some_key";
+        const dummy_data = "slaveSource4";
+        const mainSource = new DummySource();
+        const slaveSource1 = new DummySource();
+        sinon.stub(mainSource, "putData", () => {
+            return new Promise((resolve, reject) => {
+                reject(new InternalServerError());
+            });
+        });
+        let manager: DataSourceManager =
+            new DataSourceManager(mainSource, slaveSource1);
+        manager.putData(key, dummy_data).catch(done());
+    });
+
+    it("Should failed if getData fail on main datasource", function (done: Function) {
+        const key = "some_key";
+        const dummy_data = "slaveSource4";
+        const mainSource = new DummySource();
+        const slaveSource1 = new DummySource();
+        sinon.stub(mainSource, "getData", () => {
+            return new Promise((resolve, reject) => {
+                reject(new InternalServerError());
+            });
+        });
+        let manager: DataSourceManager =
+            new DataSourceManager(mainSource, slaveSource1);
+        manager.getData(key, dummy_data).catch(done());
     });
 });
