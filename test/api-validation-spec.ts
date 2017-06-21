@@ -13,7 +13,7 @@ let should = chai.should();
 
 chai.use(chaiHttp);
 
-describe("RestifyValidation Test", () => {
+describe("Services validation test", () => {
 
     let mockedBody: Model.Item;
     let ArticleServiceGetDataStub;
@@ -155,4 +155,14 @@ describe("RestifyValidation Test", () => {
             });
     });
 
+    it("GET /ping Should return pong (200)", (done) => {
+        chai.request(server)
+            .get("/ping")
+            .end((err, res) => {
+                res.should.have.status(200);
+                res.body.should.be.a("string");
+                chai.expect(res.body).to.equal("pong");
+                done();
+            });
+    });
 });
