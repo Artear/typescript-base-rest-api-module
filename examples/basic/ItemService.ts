@@ -67,4 +67,9 @@ export default class ItemService extends BaseService {
             res.send(new NotAcceptableError("Some of the items don't exists!", err));
         });
     }
+    public static patch(req: Request, res: Response, next: Next): void {
+        res.send(new NotImplementedError());
+        return next();
+    }
+
 }
