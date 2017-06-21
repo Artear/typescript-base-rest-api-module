@@ -8,6 +8,7 @@
     "debug": "npm run build && node $NODE_DEBUG_OPTION build/src/index.js",
     "prebuild": "rm -rf build",
     "build": "tsc || true",
+    "pretest": "rm -rf coverage/",
     "test": "nyc --reporter=lcov ./node_modules/.bin/ts-mocha $NODE_DEBUG_OPTION ./test/**/*spec.ts",
     "clean": "rm -rf build",
     "mockserver": "npm run build && node build/test/mocks/serverMock.js",
@@ -33,7 +34,9 @@
       ".tsx"
     ],
     "exclude": [
-      "**/*.d.ts"
+      "**/*.d.ts",
+      "test",
+      "examples"
     ],
     "require": [
       "ts-node/register"
