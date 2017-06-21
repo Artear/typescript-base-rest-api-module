@@ -17,3 +17,4 @@ test:
     - cp ./package.json ./build
     - cp ./newrelic.js ./build
     - cd ./build && tar --exclude='*.map' --exclude='test' --exclude='.git' -zcvf $CIRCLE_ARTIFACTS/build.tar.gz .
+    - cat coverage/lcov.info | node_modules/coveralls/bin/coveralls.js
