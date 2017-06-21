@@ -8,7 +8,8 @@
       "endpoint": "DYNAMODB_ENDPOINT",
       "timeout": "DYNAMODB_TIMEOUT",
       "maxRetries": "DYNAMODB_MAXRETRIES",
-      "tableName": "DYNAMODB_TABLE_NAME"
+      "tableName": "DYNAMODB_TABLE_NAME",
+      "keyName": "DYNAMODB_KEYNAME"
     },
     "cloudwatch": {
       "logGroupName": "CLOUDWATCH_LOG_GROUP_NAME",

@@ -10,12 +10,13 @@
   "aws": {
     "accessKeyId": "",
     "secretAccessKey": "",
-    "region": "",
+    "region": "us-west-2",
     "dynamodb": {
       "endpoint": "http://localhost:8000",
       "timeout": 4000,
       "maxRetries": 2,
-      "tableName": ""
+      "tableName": "",
+      "keyName": "itemId"
     }
   },
   "security": {
