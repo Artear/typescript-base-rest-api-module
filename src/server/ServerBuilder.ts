@@ -1,7 +1,7 @@
 import {RouterConfig} from "../router/BaseRouter";
 import * as restify from "restify";
 import {NotAuthorizedError, RequestHandler, Server, ServerOptions} from "restify";
-import ServerCharset from "./ServerCharset";
+import serverCharset from "./ServerCharset";
 import * as config from "config";
 
 const yn = require("yn");
@@ -84,7 +84,7 @@ export class ServerBuilder {
         if (!!this._charset) {
             server.pre(this._charset);
         } else {
-            server.pre(ServerCharset);
+            server.pre(serverCharset);
         }
 
         if (!!this._queryParser) {
