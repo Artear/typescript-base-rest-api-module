@@ -11,6 +11,7 @@ describe("Logger Test", () => {
     before(() => {
         log = (new LogBuilder)
             .withLogger(new ServerLogger())
+            .withLevel("debug")
             .build();
     });
 
