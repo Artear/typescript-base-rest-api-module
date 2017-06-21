@@ -8,7 +8,6 @@ export namespace RestifyValidation {
      * @returns {(target:Object, key:string, descriptor:TypedPropertyDescriptor<any>)=>TypedPropertyDescriptor<any>}
      */
     export function isAlphanumeric(field: string) {
-
         return Validator.paramValidation(
             (params: Object): boolean => {
                 return params[field].match(/^[a-z0-9\-]+$/i) !== null;
@@ -23,13 +22,10 @@ export namespace RestifyValidation {
      */
     export function validateBodyWithSchema(bodySchema: ObjectSchema) {
         return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
-
             if (descriptor === undefined) {
                 descriptor = Object.getOwnPropertyDescriptor(target, key);
             }
-
             let originalMethod = descriptor.value;
-
             descriptor.value = function (req: Request, res: Response, next: Next) {
 
                 if (req.params === false) {
@@ -45,7 +41,6 @@ export namespace RestifyValidation {
                     });
                 }
             };
-
             return descriptor;
         };
     }
@@ -58,17 +53,12 @@ export namespace RestifyValidation {
          */
 
         static paramValidation(validation: Function, message: string | Object | Error) {
-
             return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
-
                 if (descriptor === undefined) {
                     descriptor = Object.getOwnPropertyDescriptor(target, key);
                 }
-
                 let originalMethod = descriptor.value;
-
                 descriptor.value = function (req: Request, res: Response, next: Next) {
-
                     if (validation(req.params) === false) {
                         res.send(message);
                     } else {
@@ -76,7 +66,6 @@ export namespace RestifyValidation {
                         originalMethod.apply(this, args);
                     }
                 };
-
                 return descriptor;
             };
         }
