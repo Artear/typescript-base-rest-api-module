@@ -21,10 +21,8 @@ export class DataSourceManager {
     }
 
     public putData(key: string, value: Object): Promise<any> {
-
         return new Promise((resolve, reject) => {
             let dataSource = this.dataSources[0];
-
             if (!!dataSource) {
                 dataSource.putData(key, value).then((data) => {
                     if (!!data) {
@@ -61,7 +59,6 @@ export class DataSourceManager {
 
     private internal_get_data(index: number, key: string, fields?: string): Promise<any> {
         let dataSource = this.dataSources[index];
-
         return new Promise((resolve, reject) => {
             if (!!dataSource) {
                 dataSource.getData(key, fields).then((data) => {
@@ -104,7 +101,6 @@ export class DataSourceManager {
                         }
                         resolve(data);
                     } else {
-                        // if the main source doesn't have data, update it with the next source
                         index++;
                         this.internal_get_list(index, keys, fields).then((data) => {
                             resolve(data);
