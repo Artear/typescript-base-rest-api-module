@@ -21,7 +21,7 @@ class DummySource implements DataSource {
                 })
             );
             Promise.all(promises).then(function (items) {
-                resolve(items);
+                resolve(items.filter(Boolean));
             });
         });
     }
@@ -36,7 +36,8 @@ class DummySource implements DataSource {
 
     putData(key: string, value: any): Promise<any> {
         return new Promise((resolve) => {
-            resolve(this.values.setValue(key, value));
+            this.values.setValue(key, value)
+            resolve({"itemId": key});
         });
     }
 
@@ -160,6 +161,59 @@ describe("DataSourceManager Test", function () {
         manager.getItems(keys).catch((data) => {
             expect(data.message).to.be.equal("Resource not found");
             done();
+        });
+    });
+
+    it("Should get array of data from the last slavesource to update the main", function (done: Function) {
+        const key = "some_key";
+        const dummy_data = "slaveSource4";
+        const mainSource = new DummySource();
+        const slaveSource1 = new DummySource();
+        const slaveSource2 = new DummySource();
+        const slaveSource3 = new DummySource();
+        const slaveSource4 = new DummySource();
+
+        sinon.stub(slaveSource4, "getData", () => {
+            return new Promise((resolve) => {
+                resolve(dummy_data);
+            });
+        });
+
+        let manager: DataSourceManager =
+            new DataSourceManager(mainSource, slaveSource1, slaveSource2, slaveSource3, slaveSource4);
+        manager.getItems([key]).then((data) => {
+            expect(data[0]).to.be.equal(dummy_data);
+            done();
+        });
+    });
+
+    it("Should insert data in the main datasource", function (done: Function) {
+        const key = "some_key";
+        const dummy_data = "slaveSource4";
+        const mainSource = new DummySource();
+        const slaveSource1 = new DummySource();
+
+        let manager: DataSourceManager =
+            new DataSourceManager(mainSource, slaveSource1);
+        manager.putData(key, dummy_data).then((data) => {
+            expect(data.itemId).to.equal(key);
+            done();
+        });
+    });
+
+    it("Should update exist data in the main datasource", function (done: Function) {
+        const key = "some_key";
+        const dummy_data = "slaveSource4";
+        const mainSource = new DummySource();
+        const slaveSource1 = new DummySource();
+
+        let manager: DataSourceManager =
+            new DataSourceManager(mainSource, slaveSource1);
+        manager.putData(key, dummy_data).then((data) => {
+            manager.updateData(key, dummy_data).then((data) => {
+                expect(data.itemId).to.equal(key);
+                done();
+            });
         });
     });
 });
