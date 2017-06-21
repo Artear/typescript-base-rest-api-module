@@ -23,6 +23,7 @@ export let server: Server = new ServerBuilder()
     .withSecurity(config.get<boolean>("security.enable"))
     .withRouter(new PingRouter())
     .withRouter(new ItemRouter())
+    .withCORS(false)
     .build();
 
 let port = config.get<number>("port");
