@@ -1,5 +1,5 @@
 {
-  "name": "article_api",
+  "name": "typescript_base_rest_api",
   "version": "0.0.1",
   "description": "",
   "main": "src/app/index.ts",
