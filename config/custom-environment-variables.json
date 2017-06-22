@@ -17,14 +17,6 @@
     }
 
   },
-  "external_sources": {
-    "TN": {
-      "url": "TN_EXTERNAL_SOURCE_URL"
-    },
-    "ELTRECE": {
-      "url": "ELTRECE_EXTERNAL_SOURCE_URL"
-    }
-  },
   "security": {
     "enable": "SECURITY_ENABLE",
     "token": "SECURITY_TOKEN"
