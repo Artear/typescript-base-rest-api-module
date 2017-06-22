@@ -1,6 +1,6 @@
 import {DataSource} from "./DataSource";
 import {ResourceNotFoundError, ServiceUnavailableError, InternalServerError} from "restify";
-import LoggerHelper from "../../helper/logger/LoggerHelper";
+import {LoggerHelper} from "../../helper/logger/LoggerHelper";
 
 export class DataSourceManager {
     private dataSources: Array<DataSource>;

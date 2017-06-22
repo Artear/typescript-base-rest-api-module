@@ -1,7 +1,7 @@
 import {DataSourceManager} from "../../src/data_source/base/DataSourceManager";
 import {NotAcceptableError, UnprocessableEntityError} from "restify";
 import * as UUID from "uuid";
-import LoggerHelper from "../../src/helper/logger/LoggerHelper";
+import {LoggerHelper} from "../../src/helper/logger/LoggerHelper";
 import {MemoryDataSource} from "../../src/data_source/MemoryDataSource";
 import {Model} from "./itemModel";
 import Item = Model.Item;

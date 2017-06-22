@@ -8,7 +8,7 @@ import {queryParser, Server, ServerOptions} from "restify";
 import {OptionsBuilder} from "../../src/server/OptionsBuilder";
 import {ServerBuilder} from "../../src/server/ServerBuilder";
 import {PingRouter} from "../../src/router/PingRouter";
-import LoggerHelper from "../../src/helper/logger/LoggerHelper";
+import {LoggerHelper} from "../../src/helper/logger/LoggerHelper";
 import {ItemRouter} from "./ItemRouter";
 
 let options: ServerOptions = new OptionsBuilder()

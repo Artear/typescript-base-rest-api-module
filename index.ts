@@ -1,4 +1,4 @@
-export * from "./src/helper/logger/LoggerHelper";
+export {LoggerHelper} from "./src/helper/logger/LoggerHelper";
 
 export * from "./src/helper/validation/restify/validation";
 

@@ -2,7 +2,7 @@ import LogHandler from "./LogHandler";
 import ProductionLogConfig from "./ProductionLogConfig";
 import DevelopLogConfig from "./DevelopLogConfig";
 
-export default class LoggerHelper {
+export class LoggerHelper {
 
     private loggerHelper: LogHandler;
 
