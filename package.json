@@ -1,8 +1,8 @@
 {
   "name": "typescript_base_rest_api",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "",
-  "main": "src/app/index.ts",
+  "main": "src/index.ts",
   "scripts": {
     "start": "node build/src/index.js",
     "debug": "npm run build && node $NODE_DEBUG_OPTION build/src/index.js",
