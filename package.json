@@ -86,5 +86,16 @@
     "name": "Typescript API Doc",
     "title": "Typescript API Doc",
     "url": "http://typescript.api.com"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Artear/typescript-base-rest-api-module.git"
+  },
+  "author": "Gabriel Fusca",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Artear/typescript-base-rest-api-module/issues"
+  },
+  "homepage": "https://github.com/Artear/typescript-base-rest-api-module#readme"
+
 }
