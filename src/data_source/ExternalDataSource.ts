@@ -5,6 +5,11 @@ import * as config from "config";
 
 
 export class ExternalDataSource implements DataSource {
+    private externalSources: any;
+
+    constructor(externalSources) {
+        this.externalSources = externalSources;
+    }
 
     getData(key: string, fields?: string): Promise<any> {
 
@@ -54,9 +59,9 @@ export class ExternalDataSource implements DataSource {
         if (pattern.match(/^[a-z]+-[0-9]+$/i)) {
             let keySource = pattern.split("-");
 
-            if (!!config.get<Array<Object>>("external_sources")) {
-                if (config.get<Object>("external_sources")[keySource[0]]) {
-                    url = config.get<Object>("external_sources")[keySource[0]].url + keySource[1] + ".json";
+            if (!!this.externalSources) {
+                if (this.externalSources[keySource[0]]) {
+                    url = this.externalSources[keySource[0]].url + keySource[1] + ".json";
                 }
             } else {
                 throw new Error("External sources config is not defined");
@@ -103,9 +108,9 @@ export class ExternalDataSource implements DataSource {
         let pattern = keys[0];
         if (pattern.match(/^[a-z]+-[0-9]+$/i)) {
             let keySource = pattern.split("-");
-            if (!!config.get<Array<Object>>("external_sources") &&
-                (config.get<Object>("external_sources")[keySource[0]])) {
-                url = config.get<Object>("external_sources")[keySource[0]].url;
+            if (!!this.externalSources &&
+                (this.externalSources[keySource[0]])) {
+                url = this.externalSources[keySource[0]].url;
                 url = url.endsWith("/") ? url.slice(0, -1) : url;
                 // @todo: no acoplar llamada a api concreta. Esto se debe modificar
                 url += ".json?articleIds="
