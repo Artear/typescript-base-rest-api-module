@@ -75,7 +75,6 @@ export class ExternalDataSource implements DataSource {
         return new Promise((resolve, reject) => {
             try {
                 let path = this.getMultiGetResourceUrl(keys);
-
                 if (!!path) {
                     restler.get(path, {timeout: config.get<number>("server.options.timeout")})
                         .on("timeout", () => {
@@ -100,10 +99,12 @@ export class ExternalDataSource implements DataSource {
     }
 
     updateData(key: string, value: Object): Promise<any> {
-        throw new InternalServerError("Can not update item to an external datasource");
+        return new Promise((resolve, reject) => {
+            reject(new InternalServerError("Can not update item to an external datasource"));
+        });
     }
 
-    private getMultiGetResourceUrl(keys: Array<string>) {
+    public getMultiGetResourceUrl(keys: Array<string>) {
         let url: string = "";
         let pattern = keys[0];
         if (pattern.match(/^[a-z]+-[0-9]+$/i)) {
@@ -113,7 +114,7 @@ export class ExternalDataSource implements DataSource {
                 url = this.externalSources[keySource[0]].url;
                 url = url.endsWith("/") ? url.slice(0, -1) : url;
                 // @todo: no acoplar llamada a api concreta. Esto se debe modificar
-                url += ".json?articleIds="
+                url += ".json?+" + this.externalSources[keySource[0]].queryParameter;
                 url += keys.map((v) => (
                     v.split("-")[1] + ","
                 ));
