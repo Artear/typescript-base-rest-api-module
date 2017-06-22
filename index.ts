@@ -1,3 +1,5 @@
+export * from "./src/helper/logger/LoggerHelper";
+
 export * from "./src/helper/validation/restify/validation";
 
 export {Logger} from "./src/helper/logger/Logger";
@@ -7,8 +9,6 @@ export * from "./src/helper/logger/LogBuilder";
 export * from "./src/helper/logger/DevelopLogConfig";
 
 export {LogConfig} from "./src/helper/logger/LogConfig";
-
-export * from "./src/helper/logger/LoggerHelper";
 
 export * from "./src/helper/logger/LogHandler";
 
@@ -39,5 +39,3 @@ export {BaseService} from "./src/services/BaseService";
 export {ServerBuilder} from "./src/server/ServerBuilder";
 
 export {OptionsBuilder} from "./src/server/OptionsBuilder";
-
-

@@ -1,6 +1,6 @@
 import {DataSource} from "./DataSource";
 import {ResourceNotFoundError, ServiceUnavailableError, InternalServerError} from "restify";
-import loggerHelper from "../../helper/logger/LoggerHelper";
+import LoggerHelper from "../../helper/logger/LoggerHelper";
 
 export class DataSourceManager {
     private dataSources: Array<DataSource>;
@@ -29,11 +29,11 @@ export class DataSourceManager {
                         resolve(data);
                     }
                 }).catch((err) => {
-                    loggerHelper.error(err.message);
+                    LoggerHelper.getDefaultHandler().error(err.message);
                     reject(new InternalServerError(err.message));
                 });
             } else {
-                loggerHelper.error("DataSource not found");
+                LoggerHelper.getDefaultHandler().error("DataSource not found");
                 reject(new ServiceUnavailableError("DataSource not found"));
             }
         });
@@ -51,7 +51,7 @@ export class DataSourceManager {
                     resolve(data);
                 }
             }).catch((err) => {
-                loggerHelper.error(err.message);
+                LoggerHelper.getDefaultHandler().error(err.message);
                 reject(err);
             });
         });
@@ -74,12 +74,12 @@ export class DataSourceManager {
                         this.internal_get_data(index, key, fields).then((data) => {
                             resolve(data);
                         }).catch((err) => {
-                            loggerHelper.error(err.message);
+                            LoggerHelper.getDefaultHandler().error(err.message);
                             reject(err);
                         });
                     }
                 }).catch((err) => {
-                    loggerHelper.error(err.message);
+                    LoggerHelper.getDefaultHandler().error(err.message);
                     reject(err);
                 });
             } else {
@@ -105,12 +105,12 @@ export class DataSourceManager {
                         this.internal_get_list(index, keys, fields).then((data) => {
                             resolve(data);
                         }).catch((err) => {
-                            loggerHelper.error(err.message);
+                            LoggerHelper.getDefaultHandler().error(err.message);
                             reject(err);
                         });
                     }
                 }).catch((err) => {
-                    loggerHelper.error(err.message);
+                    LoggerHelper.getDefaultHandler().error(err.message);
                     reject(err);
                 });
             } else {
