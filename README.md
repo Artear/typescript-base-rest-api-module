@@ -1,7 +1,6 @@
 # Typescript base REST API module
-[![Coverage Status](https://coveralls.io/repos/github/Artear/typescript-base-rest-api-dynamodb-module/badge.svg?branch=master)](https://coveralls.io/github/Artear/typescript-base-rest-api-dynamodb-module?branch=master)
-[![CircleCI](https://circleci.com/gh/Artear/typescript-base-rest-api-dynamodb-module.svg?style=svg)](https://circleci.com/gh/Artear/typescript-base-rest-api-dynamodb-module)
-
+[![Coverage Status](https://coveralls.io/repos/github/Artear/typescript-base-rest-api-dynamodb-module/badge.svg?branch=master)](https://coveralls.io/github/Artear/typescript-base-rest-api-module?branch=master)
+[![CircleCI](https://circleci.com/gh/Artear/typescript-base-rest-api-module.svg?style=svg)](https://circleci.com/gh/Artear/typescript-base-rest-api-module)
 This is a lightweight annotation-based restify extension for typescript.
 
 ## Installation:
