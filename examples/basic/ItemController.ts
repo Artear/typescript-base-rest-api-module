@@ -23,7 +23,7 @@ export class ItemController {
                     " allowed format for creation is XYZ-1234"));
             }
 
-            LoggerHelper.info("CREATE: " + item.itemId);
+            LoggerHelper.getDefaultHandler().info("CREATE: " + item.itemId);
             ItemController.dataManager.putData(item.itemId, item).then((data) => {
                 resolve(data);
             }).catch((err) => {
