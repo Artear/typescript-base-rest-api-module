@@ -2,9 +2,11 @@ import LogHandler from "./LogHandler";
 import ProductionLogConfig from "./ProductionLogConfig";
 import DevelopLogConfig from "./DevelopLogConfig";
 
-class LoggerHelper {
+export default class LoggerHelper {
 
     private loggerHelper: LogHandler;
+
+    private static instance : LoggerHelper = null;
 
     constructor(env?: string) {
         switch (env) {
@@ -19,6 +21,9 @@ class LoggerHelper {
     public getHandler(): LogHandler {
         return this.loggerHelper;
     }
+    public static getDefaultHandler(): LogHandler {
+        if (LoggerHelper.instance === null)
+            LoggerHelper.instance = new LoggerHelper(process.env.NODE_ENV)
+        return LoggerHelper.instance.getHandler();
+    }
 }
-
-export default new LoggerHelper(process.env.NODE_ENV).getHandler();
