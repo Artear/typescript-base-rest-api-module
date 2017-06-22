@@ -114,7 +114,7 @@ export class ExternalDataSource implements DataSource {
                 url = this.externalSources[keySource[0]].url;
                 url = url.endsWith("/") ? url.slice(0, -1) : url;
                 // @todo: no acoplar llamada a api concreta. Esto se debe modificar
-                url += ".json?+" + this.externalSources[keySource[0]].queryParameter;
+                url += ".json?+" + this.externalSources[keySource[0]].queryParameter + "=";
                 url += keys.map((v) => (
                     v.split("-")[1] + ","
                 ));

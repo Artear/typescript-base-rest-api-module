@@ -12,7 +12,7 @@ import DocumentClient = DynamoDB.DocumentClient;
 const external_sources = {
     "DM": {
         "url": "http://dummy.url.com.ar/media-api/",
-        "queryParameter": "itemId"
+        "queryParameter": "mediaIds"
     },
 };
 
