@@ -1,0 +1,9 @@
+!dist/**
+.circle.yml
+.nyc_output
+coverage
+*.log
+npm-debug.log*
+tsconfig.json
+tslint.json
+test
