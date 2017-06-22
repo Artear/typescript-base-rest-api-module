@@ -6,12 +6,12 @@
   "typings": "./dist/typescript-rest.d.ts",
   "scripts": {
     "start": "tsc -w",
+    "clean": "rm -rf dist",
     "build": "npm run clean && tsc",
     "prepublish": "npm run build",
     "tsc": "tsc",
     "pretest": "rm -rf coverage/",
     "test": "nyc --reporter=lcov ./node_modules/.bin/ts-mocha $NODE_DEBUG_OPTION ./test/**/*spec.ts",
-    "clean": "rm -rf build",
     "prerun-basic-example": "npm run build",
     "run-basic-example": "node build/examples/basic/index.js"
   },
