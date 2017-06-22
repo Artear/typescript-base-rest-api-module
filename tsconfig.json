@@ -1,9 +1,10 @@
 {
   "compilerOptions": {
+    "declaration": true,
     "target": "es6",
     "module": "commonjs",
     "sourceMap": true,
-    "outDir": "./build",
+    "outDir": "./dist",
     "removeComments": false,
     "noImplicitAny": false,
     "experimentalDecorators": true

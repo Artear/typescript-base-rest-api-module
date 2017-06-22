@@ -2,18 +2,16 @@
   "name": "typescript_base_rest_api",
   "version": "0.0.3",
   "description": "",
-  "main": "src/index.ts",
+  "main": "dist/index.js",
+  "typings": "./dist/typescript-rest.d.ts",
   "scripts": {
-    "start": "node build/src/index.js",
-    "debug": "npm run build && node $NODE_DEBUG_OPTION build/src/index.js",
-    "prebuild": "rm -rf build",
-    "build": "tsc || true",
+    "start": "tsc -w",
+    "build": "npm run clean && tsc",
+    "prepublish": "npm run build",
+    "tsc": "tsc",
     "pretest": "rm -rf coverage/",
     "test": "nyc --reporter=lcov ./node_modules/.bin/ts-mocha $NODE_DEBUG_OPTION ./test/**/*spec.ts",
     "clean": "rm -rf build",
-    "mockserver": "npm run build && node build/test/mocks/serverMock.js",
-    "preapidoc": "rm -rf docs/",
-    "apidoc": "./node_modules/apidoc/bin/apidoc -i src/ -o docs/",
     "prerun-basic-example": "npm run build",
     "run-basic-example": "node build/examples/basic/index.js"
   },
@@ -26,7 +24,9 @@
     "debug",
     "intellisense",
     "compile",
-    "transpile"
+    "transpile",
+    "REST",
+    "api"
   ],
   "nyc": {
     "extension": [
@@ -96,6 +96,8 @@
   "bugs": {
     "url": "https://github.com/Artear/typescript-base-rest-api-module/issues"
   },
-  "homepage": "https://github.com/Artear/typescript-base-rest-api-module#readme"
-
+  "homepage": "https://github.com/Artear/typescript-base-rest-api-module#readme",
+  "directories": {
+    "lib": "dist"
+  }
 }
