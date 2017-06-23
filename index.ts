@@ -28,6 +28,8 @@ export {Connection} from "./src/data_source/dynamo/Connection";
 
 export {MemoryDataSource} from "./src/data_source/MemoryDataSource";
 
+export {ExternalUrlBuilder} from "./src/data_source/ExternalUrlBuilder";
+
 export {ExternalDataSource} from "./src/data_source/ExternalDataSource";
 
 export {RouterConfig} from "./src/router/BaseRouter";
