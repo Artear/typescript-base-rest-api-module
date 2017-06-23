@@ -37,6 +37,7 @@ export class ItemExternalUrlBuilder extends ExternalUrlBuilder {
     public getMultiGetResourceUrl(keys: Array<string>) {
         let url: string = "";
         let pattern = keys[0];
+        let itemIds = [];
         if (pattern.match(/^[a-z]+-[0-9]+$/i)) {
             let keySource = pattern.split("-");
             if (!!this.externalSources &&
@@ -44,14 +45,14 @@ export class ItemExternalUrlBuilder extends ExternalUrlBuilder {
                 url = this.externalSources[keySource[0]].url;
                 url = url.endsWith("/") ? url.slice(0, -1) : url;
                 url += ".json?+" + this.externalSources[keySource[0]].queryParameter + "=";
-                url += keys.map((v) => (
-                    v.split("-")[1] + ","
+                keys.map((v) => (
+                    itemIds.push(v.split("-")[1])
                 ));
             } else {
                 throw new Error("External sources config is not defined");
             }
         }
-        return url.slice(0, -1);
+        return url + itemIds.join();
     }
 
 }
