@@ -20,7 +20,7 @@ export namespace RestifyValidation {
      * @param bodySchema
      * @returns {(target:Object, key:string, descriptor:TypedPropertyDescriptor<any>)=>TypedPropertyDescriptor<any>}
      */
-    export function validateBodyWithSchema(bodySchema: ObjectSchema) {
+    export function validateBodyWithSchema(bodySchema) {
         return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
             if (descriptor === undefined) {
                 descriptor = Object.getOwnPropertyDescriptor(target, key);
