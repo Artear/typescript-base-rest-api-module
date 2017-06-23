@@ -93,8 +93,8 @@ export class DataSourceManager {
         return new Promise((resolve, reject) => {
             if (!!dataSource) {
                 dataSource.getItems(keys, fields).then((data) => {
-                    // if we dont find data or data contains a null article (not founded) we fetch the next datasource
-                    if (!!data && data.length > 0) {
+                    // if we dont find all the keys we fetch the next datasource
+                    if (!!data && data.length === keys.length) {
                         if (index > 0) {
                             // update the main source: we have to verify all the items and update which ones that dont exist
                             this.updateMainDatasource(keys, data, reject);
