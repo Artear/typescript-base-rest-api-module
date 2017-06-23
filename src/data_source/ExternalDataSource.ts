@@ -26,10 +26,10 @@ export class ExternalDataSource implements DataSource {
                             reject(new ServiceUnavailableError("External data source not respond"));
                         })
                         .on("fail", (data, response) => {
-                            reject(new BadRequestError(response.statusMessage));
+                            reject(new BadRequestError(data.statusMessage));
                         })
                         .on("error", (err, response) => {
-                            reject(new ServiceUnavailableError(response.statusMessage));
+                            reject(new ServiceUnavailableError(err.statusMessage));
                         })
                         .on("success", (result) => {
                             resolve(result);
