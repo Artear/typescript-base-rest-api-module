@@ -8,26 +8,21 @@ import {InternalServerError, NotAcceptableError, ServiceUnavailableError} from "
 import {ExternalDataSource} from "../src/data_source/ExternalDataSource";
 import * as nock from "nock";
 import DocumentClient = DynamoDB.DocumentClient;
-
-const external_sources = {
-    "DM": {
-        "url": "http://dummy.url.com.ar/media-api/",
-        "queryParameter": "mediaIds"
-    },
-};
-
+import {ItemExternalUrlBuilder} from "../examples/basic/ItemExternalUrlBuilder";
 
 describe("ExternalDataSource Test", function () {
 
     let externalSource : ExternalDataSource = null;
-
+    let urlBuilder : ItemExternalUrlBuilder = null;
     beforeEach(() => {
-        externalSource = new ExternalDataSource(external_sources);
-    })
+        urlBuilder = new ItemExternalUrlBuilder();
+        externalSource = new ExternalDataSource(urlBuilder);
+    });
+
     it("Should get an external source", (done: Function) => {
         let key = "DM-1234";
 
-        nock(external_sources["DM"].url)
+        nock(urlBuilder.getResourceUrlOrThrow(key))
             .get(/$/)
             .reply(200, () => {
                 return itemMock;
@@ -43,7 +38,7 @@ describe("ExternalDataSource Test", function () {
     it("Should get an array of external source", (done: Function) => {
         let keys = ["DM-1234", "DM-1235"];
 
-        nock(externalSource.getMultiGetResourceUrl(keys))
+        nock(urlBuilder.getMultiGetResourceUrl(keys))
             .get(/$/)
             .reply(200, () => {
                 return [itemMock];
@@ -89,8 +84,8 @@ describe("ExternalDataSource Test", function () {
     });
 
     it("Should return Resource URL", () => {
-        let resource_url = externalSource.getResourceUrlOrThrow("DM-765432345");
-        expect(resource_url).to.be.equal(external_sources["DM"].url + "765432345.json");
+        let resource_url = urlBuilder.getResourceUrlOrThrow("DM-765432345");
+        expect(resource_url).to.be.equal("http://dummy.url.com.ar/media-api/765432345.json");
     });
 
     it("Shouldn't update data to a resource URL", (done) => {
