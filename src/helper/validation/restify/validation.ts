@@ -16,6 +16,16 @@ export namespace RestifyValidation {
         );
     }
 
+    export function isNumeric(field:string) {
+
+        return Validator.paramValidation(
+            (params:Object):boolean => {
+                return params[field].match(/^\d+$/) !== null;
+            },
+            new NotAcceptableError('The ' + field + ' must be numeric')
+        );
+    }
+
     /**
      * @param bodySchema
      * @returns {(target:Object, key:string, descriptor:TypedPropertyDescriptor<any>)=>TypedPropertyDescriptor<any>}

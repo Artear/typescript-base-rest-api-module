@@ -8,6 +8,8 @@ import * as config from "config";
 import chaiHttp = require("chai-http");
 import {Model} from "../examples/basic/itemModel";
 import ItemService from "../examples/basic/ItemService";
+import {RestifyValidation} from "../src/helper/validation/restify/validation";
+import {server as dummy_server} from "./mocks/DummyServer";
 
 let should = chai.should();
 
@@ -172,6 +174,26 @@ describe("Services validation test", () => {
             .get("/items/ab-1234")
             .end((err, res) => {
                 res.should.have.status(404);
+                done();
+            });
+    });
+
+    it("Should validate numerics ids", (done) => {
+        chai.request(dummy_server)
+            .get("/dummy/1234")
+            .end((err, res) => {
+                res.should.have.status(200);
+                done();
+            });
+    });
+
+    it("Should validate invalid numeric ids", (done) => {
+        chai.request(dummy_server)
+            .get("/dummy/ab-1234")
+            .end((err, res) => {
+                res.should.have.status(406);
+                res.body.should.be.a("object");
+                res.body.should.have.property("code").eql("NotAcceptableError");
                 done();
             });
     });
