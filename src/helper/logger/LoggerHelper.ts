@@ -23,7 +23,7 @@ export class LoggerHelper {
     }
     public static getDefaultHandler(): LogHandler {
         if (LoggerHelper.instance === null)
-            LoggerHelper.instance = new LoggerHelper(process.env.NODE_ENV)
+            LoggerHelper.instance = new LoggerHelper(process.env["NODE_ENV"])
         return LoggerHelper.instance.getHandler();
     }
 }

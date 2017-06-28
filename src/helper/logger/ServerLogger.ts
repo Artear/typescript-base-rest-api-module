@@ -2,7 +2,7 @@ import * as Debug from "debug";
 import {Logger} from "./Logger";
 import * as winston from "winston";
 
-const debug = Debug(process.env.DEBUG || "server-log");
+const debug = Debug(process.env["DEBUG"] || "server-log");
 
 export default class ServerLogger extends Logger {
 

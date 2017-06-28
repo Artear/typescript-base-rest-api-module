@@ -7,13 +7,14 @@
   "scripts": {
     "start": "tsc -w",
     "clean": "rm -rf dist",
-    "build": "npm run clean && tsc",
+    "prebuild": "npm run clean",
+    "build": "tsc",
     "prepublish": "npm run build",
     "tsc": "tsc",
     "pretest": "rm -rf coverage/",
     "test": "nyc --reporter=lcov ./node_modules/.bin/ts-mocha $NODE_DEBUG_OPTION ./test/**/*spec.ts",
-    "prerun-basic-example": "npm run build",
-    "run-basic-example": "node build/examples/basic/index.js"
+    "prebasic-example": "npm run build",
+    "basic-example": "node build/examples/basic/index.js"
   },
   "keywords": [
     "typescript",
@@ -48,6 +49,7 @@
     "@types/config": "0.0.32",
     "@types/mocha": "2.2.37",
     "@types/nock": "8.2.0",
+    "@types/node": "8.0.4",
     "@types/restify": "4.3.2",
     "@types/sinon": "2.2.2",
     "apidoc": "0.17.5",
