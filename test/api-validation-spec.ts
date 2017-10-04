@@ -7,7 +7,7 @@ import {server as server} from "../examples/basic/index";
 import * as config from "config";
 import chaiHttp = require("chai-http");
 import {Model} from "../examples/basic/itemModel";
-import ItemService from "../examples/basic/ItemService";
+import ItemService from "../examples/basic/latest/ItemService";
 import {RestifyValidation} from "../src/helper/validation/restify/validation";
 import {server as dummy_server} from "./mocks/DummyServer";
 

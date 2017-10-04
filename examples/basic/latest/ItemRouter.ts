@@ -1,4 +1,4 @@
-import {RouterConfig} from "../../src/router/BaseRouter";
+import {RouterConfig} from "../../../src/router/BaseRouter";
 import ItemService from "./ItemService";
 
 export class ItemRouter extends RouterConfig {

@@ -1,7 +1,7 @@
 import {Next, NotFoundError, NotImplementedError, Request, Response, NotAcceptableError} from "restify";
-import {BaseService} from "../../src/services/BaseService";
-import {RestifyValidation} from "../../src/helper/validation/restify/validation";
-import {itemSchemaPost, itemSchemaUpdate} from "./itemSchema";
+import {BaseService} from "../../../src/services/BaseService";
+import {RestifyValidation} from "../../../src/helper/validation/restify/validation";
+import {itemSchemaPost, itemSchemaUpdate} from "../itemSchema";
 import {ItemController} from "./ItemController";
 import {Model} from "./itemModel";
 

@@ -45,6 +45,11 @@ export class ServerBuilder {
         return this;
     }
 
+    public withRouterList(routerList: Array<RouterConfig>): ServerBuilder {
+        routerList.map(router => this._routerConfig.push(router));
+        return this;
+    }
+
     public withSanitizer(sanitizer: RequestHandler) {
         this._sanitizer = sanitizer;
     }
