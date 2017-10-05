@@ -14,7 +14,7 @@
     "pretest": "rm -rf coverage/",
     "test": "nyc --reporter=lcov ./node_modules/.bin/ts-mocha $NODE_DEBUG_OPTION ./test/**/*spec.ts",
     "prebasic-example": "npm run build",
-    "basic-example": "node build/examples/basic/index.js"
+    "basic-example": "node dist/examples/basic/index.js"
   },
   "keywords": [
     "typescript",

@@ -8,7 +8,6 @@ import {ExternalUrlBuilder} from "./ExternalUrlBuilder";
  * Class that represents an external data source (fallback to fetch external data)
  */
 export class ExternalDataSource implements DataSource {
-
     private urlBuilder: any;
 
     constructor(urlBuilder: ExternalUrlBuilder) {
@@ -82,9 +81,4 @@ export class ExternalDataSource implements DataSource {
             reject(new InternalServerError("Can not update item to an external datasource"));
         });
     }
-
-    filterData(field: string, value: string): Promise<any> {
-        throw Error("Operation not supported!");
-    }
-
 }

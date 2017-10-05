@@ -7,6 +7,4 @@ export declare interface DataSource {
     getItems(keys: Array<string>, fields?: string): Promise<any>;
 
     updateData(key: string, value: Object): Promise<any>;
-
-    filterData(field: string, value: string): Promise<any>;
 }

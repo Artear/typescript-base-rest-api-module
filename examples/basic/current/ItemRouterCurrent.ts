@@ -1,7 +1,7 @@
 import {RouterConfig} from "../../../src/router/BaseRouter";
 import ItemService from "./ItemService";
 
-export class ItemRouter extends RouterConfig {
+export class ItemRouterCurrent extends RouterConfig {
     protected onConfig(): void {
         this.get("/items", ItemService.getItems);
         this.get("/items/:id", ItemService.findById);

@@ -1,4 +1,4 @@
-import {ExternalUrlBuilder} from "../../src/data_source/ExternalUrlBuilder";
+import {ExternalUrlBuilder} from "../../../src/data_source/ExternalUrlBuilder";
 
 export class ItemExternalUrlBuilder extends ExternalUrlBuilder {
 

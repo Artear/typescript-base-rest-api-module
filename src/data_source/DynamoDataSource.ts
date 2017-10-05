@@ -8,29 +8,6 @@ export class DynamoDataSource implements DataSource {
     private table: string = config.get<string>("aws.dynamodb.tableName");
     private keyName: string = config.get<string>("aws.dynamodb.keyName");
 
-    filterData(field: string, value: string): Promise<any> {
-        const params = {
-            TableName: this.table,
-            KeyConditionExpression: `#field = :value`,
-            ExpressionAttributeNames: {
-                "#field": field
-            },
-            ExpressionAttributeValues: {
-                ":value": value
-            }
-        };
-        return new Promise((resolve, reject) => {
-            Connection.getInstance().query(params, (err, data) => {
-                if (err) {
-                    reject(new InternalServerError("Unable to get item, error: " + err.message));
-                } else {
-                    resolve(data.Items);
-                }
-            });
-        });
-
-    }
-
     getData(key: string, fields?: string): Promise<any> {
         const params = {
             TableName: this.table,

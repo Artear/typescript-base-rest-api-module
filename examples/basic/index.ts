@@ -9,9 +9,7 @@ import {OptionsBuilder} from "../../src/server/OptionsBuilder";
 import {ServerBuilder} from "../../src/server/ServerBuilder";
 import {PingRouter} from "../../src/router/PingRouter";
 import {LoggerHelper} from "../../src/helper/logger/LoggerHelper";
-import {ItemRouter} from "./latest/ItemRouter";
-import {ItemRouterStable} from "./stable/ItemRouterStable";
-import RouterStableBuilder from "./latest/RouterStableBuilder";
+import RouterCurrentBuilder from "./current/RouterCurrentBuilder";
 
 let options: ServerOptions = new OptionsBuilder()
     .withName(config.get<string>("server.options.name"))
@@ -19,26 +17,25 @@ let options: ServerOptions = new OptionsBuilder()
     .build();
 
 
-const latest_routers = RouterStableBuilder.build();
-const stable_routers = RouterLatestBuilder.build();
+const stableRouters = RouterCurrentBuilder.build();
+const currentRouters = RouterCurrentBuilder.build();
 
-const crazy_routers = RouterCrazyBuilder.build();
-
-let server: Server = new ServerBuilder()
+export let server: Server = new ServerBuilder()
     .withTimeout(config.get<number>("server.options.timeout"))
     .withOptions(options)
-    .withRouterList(latest_routers)
-    .withRouterList(stable_routers)
+    .withRouter(new PingRouter())
+    .withRouterList(currentRouters)
+    .withRouterList(stableRouters)
     .withQueryParser(queryParser())
     .withSecurity(config.get<boolean>("security.enable"))
     .withCORS(false)
     .build();
 
 
-// version middleware: default => latest
+// version middleware: default => current
 server.pre(function(req, res, next) {
-    if (!req.headers['accept-version']) {
-        req.headers['accept-version'] = '1.0';
+    if (!req.headers["accept-version"]) {
+        req.headers["accept-version"] = config.get<string>("server.options.apiVersion.current");
     }
     next();
 });

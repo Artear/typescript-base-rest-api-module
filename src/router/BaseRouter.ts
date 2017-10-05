@@ -3,38 +3,36 @@ import {Server, RequestHandler} from "restify";
 
 export abstract class RouterConfig {
     private _routers: Array<Config> = [];
-    private _version: any;
 
-    constructor(version?: any) {
-        this._version = version;
+    constructor() {
     }
 
     protected get(route: any, callback: RequestHandler): void {
-        this._routers.push(new Config(HttpVerb.GET, route, callback, this._version));
+        this._routers.push(new Config(HttpVerb.GET, route, callback));
     }
 
     protected head(route: any, callback: RequestHandler): void {
-        this._routers.push(new Config(HttpVerb.HEAD, route, callback, this._version));
+        this._routers.push(new Config(HttpVerb.HEAD, route, callback));
     }
 
     protected post(route: any, callback: RequestHandler): void {
-        this._routers.push(new Config(HttpVerb.POST, route, callback, this._version));
+        this._routers.push(new Config(HttpVerb.POST, route, callback));
     }
 
     protected put(route: any, callback: RequestHandler): void {
-        this._routers.push(new Config(HttpVerb.PUT, route, callback, this._version));
+        this._routers.push(new Config(HttpVerb.PUT, route, callback));
     }
 
     protected del(route: any, callback: RequestHandler): void {
-        this._routers.push(new Config(HttpVerb.DELETE, route, callback, this._version));
+        this._routers.push(new Config(HttpVerb.DELETE, route, callback));
     }
 
     protected opts(route: any, callback: RequestHandler): void {
-        this._routers.push(new Config(HttpVerb.OPTIONS, route, callback, this._version));
+        this._routers.push(new Config(HttpVerb.OPTIONS, route, callback));
     }
 
     protected patch(route: any, callback: RequestHandler): void {
-        this._routers.push(new Config(HttpVerb.PATCH, route, callback, this._version));
+        this._routers.push(new Config(HttpVerb.PATCH, route, callback));
     }
 
     protected abstract onConfig(): void;
@@ -47,8 +45,7 @@ export abstract class RouterConfig {
 
             switch (router.verb) {
                 case HttpVerb.GET:
-                    server.get({path: router.route, version: router.version },
-                        router.callback);
+                    server.get(router.route, router.callback);
                     break;
                 case HttpVerb.HEAD:
                     server.head(router.route, router.callback);
@@ -83,21 +80,15 @@ class Config {
     private _verb: HttpVerb;
     private _route: any;
     private _callback: RequestHandler;
-    private _version: any;
 
-    constructor(verb: HttpVerb, route: any, callback: RequestHandler, version?: any) {
+    constructor(verb: HttpVerb, route: any, callback: RequestHandler) {
         this._verb = verb;
         this._route = route;
         this._callback = callback;
-        this._version = version;
     }
 
     get verb(): HttpVerb {
         return this._verb;
-    }
-
-    get version(): any {
-        return this._version;
     }
 
     get route(): any {
