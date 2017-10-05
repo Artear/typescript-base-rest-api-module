@@ -139,6 +139,13 @@ export class ServerBuilder {
             config.apply(server);
         });
 
+        server.pre(function(req, res, next) {
+            if (!req.headers["accept-version"]) {
+                req.headers["accept-version"] = config.get<string>("server.options.apiVersion.stable");
+            }
+            next();
+        });
+
         return server;
     }
 }

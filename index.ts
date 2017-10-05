@@ -41,3 +41,5 @@ export {BaseService} from "./src/services/BaseService";
 export {ServerBuilder} from "./src/server/ServerBuilder";
 
 export {OptionsBuilder} from "./src/server/OptionsBuilder";
+
+export {RouterListBuilder} from "./src/router/RouterListBuilder";
