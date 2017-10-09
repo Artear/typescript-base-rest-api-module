@@ -1,5 +1,3 @@
-import {RouterConfig} from "./BaseRouter";
-
 export class RouterListBuilder {
 
     _version: string;

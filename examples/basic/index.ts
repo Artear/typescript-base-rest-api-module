@@ -10,6 +10,7 @@ import {ServerBuilder} from "../../src/server/ServerBuilder";
 import {PingRouter} from "../../src/router/PingRouter";
 import {LoggerHelper} from "../../src/helper/logger/LoggerHelper";
 import currentRoutes from "./current/Routes";
+import stableRoutes from "./stable/Routes";
 
 let options: ServerOptions = new OptionsBuilder()
     .withName(config.get<string>("server.options.name"))
@@ -21,8 +22,9 @@ let options: ServerOptions = new OptionsBuilder()
 export let server: Server = new ServerBuilder()
     .withTimeout(config.get<number>("server.options.timeout"))
     .withOptions(options)
-    .withRouter(new PingRouter())
+    .withRouter(new PingRouter(config.get<string>("server.options.apiVersion.stable")))
     .withRouterList(currentRoutes)
+    .withRouterList(stableRoutes)
     .withQueryParser(queryParser())
     .withSecurity(config.get<boolean>("security.enable"))
     .withCORS(false)
