@@ -8,7 +8,7 @@ import {BadRequestError, InternalServerError, NotAcceptableError, ServiceUnavail
 import {ExternalDataSource} from "../src/data_source/ExternalDataSource";
 import * as nock from "nock";
 import DocumentClient = DynamoDB.DocumentClient;
-import {ItemExternalUrlBuilder} from "../examples/basic/ItemExternalUrlBuilder";
+import {ItemExternalUrlBuilder} from "../examples/basic/current/ItemExternalUrlBuilder";
 import * as config from "config";
 
 describe("ExternalDataSource Test", function () {

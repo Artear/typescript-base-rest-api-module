@@ -3,8 +3,6 @@ import {DataSourceManager} from "../src/data_source/base/DataSourceManager";
 import * as sinon from "sinon";
 import {expect} from "chai";
 import Dictionary from "typescript-collections/dist/lib/Dictionary";
-import {DynamoDB} from "aws-sdk";
-import DocumentClient = DynamoDB.DocumentClient;
 import {InternalServerError, NotFoundError} from "restify";
 
 class DummySource implements DataSource {
@@ -36,7 +34,7 @@ class DummySource implements DataSource {
 
     putData(key: string, value: any): Promise<any> {
         return new Promise((resolve) => {
-            this.values.setValue(key, value)
+            this.values.setValue(key, value);
             resolve({"itemId": key});
         });
     }
@@ -44,6 +42,11 @@ class DummySource implements DataSource {
     updateData(key: string, value: Object): Promise<any> {
         return this.putData(key, value);
     }
+
+    filterData(field: string, value: string): Promise<any> {
+        throw Error("Operation not supported!");
+    }
+
 }
 
 describe("DataSourceManager Test", function () {

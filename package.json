@@ -1,6 +1,6 @@
 {
   "name": "typescript_base_rest_api",
-  "version": "0.0.15",
+  "version": "0.0.18",
   "description": "",
   "main": "dist/index.js",
   "typings": "./dist/typescript-rest.d.ts",
@@ -14,7 +14,7 @@
     "pretest": "rm -rf coverage/",
     "test": "nyc --reporter=lcov ./node_modules/.bin/ts-mocha $NODE_DEBUG_OPTION ./test/**/*spec.ts",
     "prebasic-example": "npm run build",
-    "basic-example": "node build/examples/basic/index.js"
+    "basic-example": "node dist/examples/basic/index.js"
   },
   "keywords": [
     "typescript",

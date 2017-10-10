@@ -45,6 +45,11 @@ export class ServerBuilder {
         return this;
     }
 
+    public withRouterList(routerList: Array<RouterConfig>): ServerBuilder {
+        routerList.map(router => this._routerConfig.push(router));
+        return this;
+    }
+
     public withSanitizer(sanitizer: RequestHandler) {
         this._sanitizer = sanitizer;
     }
@@ -132,6 +137,13 @@ export class ServerBuilder {
 
         this._routerConfig.forEach((config: RouterConfig) => {
             config.apply(server);
+        });
+
+        server.pre(function(req, res, next) {
+            if (!req.headers["accept-version"]) {
+                req.headers["accept-version"] = config.get<string>("server.options.apiVersion.stable");
+            }
+            next();
         });
 
         return server;
