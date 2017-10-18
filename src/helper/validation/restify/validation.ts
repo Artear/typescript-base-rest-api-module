@@ -1,6 +1,5 @@
-import {Response, Request, Next, NotAcceptableError, UnprocessableEntityError} from "restify";
+import {Next, NotAcceptableError, Request, Response, UnprocessableEntityError} from "restify";
 import * as Joi from "joi";
-import {ObjectSchema} from "joi";
 
 export namespace RestifyValidation {
     /**
@@ -10,19 +9,19 @@ export namespace RestifyValidation {
     export function isAlphanumeric(field: string) {
         return Validator.paramValidation(
             (params: Object): boolean => {
-                return params[field].match(/^[a-z0-9\-]+$/i) !== null;
+                return params[field].match(/^[a-z0-9\-_]+$/i) !== null;
             },
             new NotAcceptableError("The " + field + " must be alphanumeric")
         );
     }
 
-    export function isNumeric(field:string) {
+    export function isNumeric(field: string) {
 
         return Validator.paramValidation(
-            (params:Object):boolean => {
+            (params: Object): boolean => {
                 return params[field].match(/^\d+$/) !== null;
             },
-            new NotAcceptableError('The ' + field + ' must be numeric')
+            new NotAcceptableError("The " + field + " must be numeric")
         );
     }
 
