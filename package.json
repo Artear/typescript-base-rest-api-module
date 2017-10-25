@@ -1,6 +1,6 @@
 {
   "name": "typescript_base_rest_api",
-  "version": "0.0.22",
+  "version": "0.0.29",
   "description": "",
   "main": "dist/index.js",
   "typings": "./dist/typescript-rest.d.ts",
@@ -15,10 +15,11 @@
     "test": "nyc --reporter=lcov ./node_modules/.bin/ts-mocha $NODE_DEBUG_OPTION ./test/**/*spec.ts",
     "prebasic-example": "npm run build",
     "basic-example": "node dist/examples/basic/index.js",
-    "promote": "node ./dist/src/tools/version-promote/index.js"
+    "promote": "node ./dist/tools/version-promote/index.js",
+    "postbuild": "cp -R ./tools/version-promote/scratch ./dist/tools/version-promote/ "
   },
   "bin": {
-    "version-promote": "./dist/src/tools/version-promote/index.js"
+    "version-promote": "./dist/tools/version-promote/index.js"
   },
   "keywords": [
     "typescript",

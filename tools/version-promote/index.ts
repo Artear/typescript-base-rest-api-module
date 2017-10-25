@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import chooseOperations from "./lib/chooseOperations";
 import newOperation from "./lib/newOperation";
 import clone from "./lib/cloneOperation";

@@ -1,5 +1,5 @@
 export default {
     srcPath: "./src/",
-    scratchPath: "./src/tools/version-promote/scratch",
+    scratchPath: `${__dirname}/scratch`,
     versionFile: "version.json"
 };

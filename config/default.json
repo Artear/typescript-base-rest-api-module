@@ -5,10 +5,7 @@
       "name": "Typescript rest API",
       "version": "0.0.1",
       "timeout": 5000,
-      "apiVersion": {
-        "stable": "1.0.0",
-        "current": "2.0.0"
-      }
+      "defaultApiVersion": "1.0.0"
     }
   },
   "aws": {

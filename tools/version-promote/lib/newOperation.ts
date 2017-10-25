@@ -1,8 +1,8 @@
 import * as inquirer from "inquirer";
 import * as fs from "fs-extra";
 import config  from "../config";
-import getVersionList from "../lib/versionList";
-import {overrideDir} from  "./cloneOperation";
+import getVersionList from "./versionList";
+import {overrideDir} from "./cloneOperation";
 
 
 export default () => {
