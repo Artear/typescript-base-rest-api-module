@@ -67,7 +67,6 @@ const fromScratch = () => {
                     version.number = value.versionNumber;
                     fs.copy(`${config.scratchPath}`, `${config.srcPath}${version.name}`).then(() => {
                         fs.writeJsonSync(`${config.srcPath}${version.name}/${config.versionFile}`, version);
-
                         console.info("Done!");
                     });
                 });
@@ -150,7 +149,7 @@ const fromPrevious = () => {
                 }
             })
             .catch((err) => {
-                console.log("Error: ", err.message);
+                throw new Error(`Error gathering versions: ${err.message}`);
             });
 
     }).catch((err) => {

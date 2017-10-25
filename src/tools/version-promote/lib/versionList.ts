@@ -41,7 +41,7 @@ export default () => {
         if (versions.length > 0) {
             resolve(versions);
         } else {
-            reject("Zero versions");
+            reject(new Error("Zero versions, try crating a new version from scratch"));
         }
     });
 };

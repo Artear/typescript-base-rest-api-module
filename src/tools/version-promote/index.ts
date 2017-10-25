@@ -15,10 +15,10 @@ chooseOperations()
                     clone(versions, "", "");
                 })
                 .catch((err) => {
-                    throw new Error(`Error gathering versions: ${err.message}`);
+                    console.log(`Error gathering versions: ${err.message}`);
                 });
         }
     })
     .catch((err) => {
-        console.log("Error: ", err.message);
+        console.log(err.message);
     });
