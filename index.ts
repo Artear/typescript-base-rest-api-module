@@ -36,6 +36,8 @@ export {RouterConfig} from "./src/router/BaseRouter";
 
 export {PingRouter} from "./src/router/PingRouter";
 
+export {VersionRouter} from "./src/router/VersionRouter";
+
 export {BaseService} from "./src/services/BaseService";
 
 export {ServerBuilder} from "./src/server/ServerBuilder";
