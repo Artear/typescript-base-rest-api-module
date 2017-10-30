@@ -1,9 +1,10 @@
 import {ItemRouter} from "./ItemRouter";
-import * as config from "config";
 import {RouterListBuilder} from "../../../src/router/RouterListBuilder";
 import {PingRouter} from "../../../src/router/PingRouter";
 
-const RouterBuilder = (new RouterListBuilder(config.get<string>("server.options.apiVersion.current")))
+const _version = require("./version.json");
+
+const RouterBuilder = (new RouterListBuilder(_version.number))
     .withRouter(PingRouter)
     .withRouter(ItemRouter)
     .build();

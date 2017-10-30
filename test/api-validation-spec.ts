@@ -8,7 +8,6 @@ import * as config from "config";
 import chaiHttp = require("chai-http");
 import {Model} from "../examples/basic/itemModel";
 import ItemService from "../examples/basic/current/ItemService";
-import {RestifyValidation} from "../src/helper/validation/restify/validation";
 import {server as dummy_server} from "./mocks/DummyServer";
 
 let should = chai.should();
