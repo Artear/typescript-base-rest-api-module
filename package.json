@@ -1,6 +1,6 @@
 {
   "name": "typescript_base_rest_api",
-  "version": "0.0.21",
+  "version": "0.0.30",
   "description": "",
   "main": "dist/index.js",
   "typings": "./dist/typescript-rest.d.ts",
@@ -14,7 +14,11 @@
     "pretest": "rm -rf coverage/",
     "test": "nyc --reporter=lcov ./node_modules/.bin/ts-mocha $NODE_DEBUG_OPTION ./test/**/*spec.ts",
     "prebasic-example": "npm run build",
-    "basic-example": "node dist/examples/basic/index.js"
+    "basic-example": "node dist/examples/basic/index.js",
+    "postbuild": "cp -R ./tools/version-promote/scratch ./dist/tools/version-promote/ "
+  },
+  "bin": {
+    "version-promote": "./dist/tools/version-promote/index.js"
   },
   "keywords": [
     "typescript",
@@ -66,6 +70,7 @@
     "typescript": "2.1.4"
   },
   "dependencies": {
+    "@types/inquirer": "0.0.35",
     "@types/aws-sdk": "2.7.0",
     "@types/joi": "10.0.0",
     "@types/restler": "3.1.5",
@@ -82,7 +87,9 @@
     "uuid": "3.0.1",
     "winston": "^2.3.0",
     "winston-cloudwatch": "^1.11.3",
-    "yn": "2.0.0"
+    "yn": "2.0.0",
+    "inquirer": "3.3.0",
+    "fs-extra": "4.0.2"
   },
   "apidoc": {
     "name": "Typescript API Doc",

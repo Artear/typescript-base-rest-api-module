@@ -7,7 +7,6 @@ if (config.get<boolean>("newrelic.enable")) {
 import {queryParser, Server, ServerOptions} from "restify";
 import {OptionsBuilder} from "../../src/server/OptionsBuilder";
 import {ServerBuilder} from "../../src/server/ServerBuilder";
-import {PingRouter} from "../../src/router/PingRouter";
 import {LoggerHelper} from "../../src/helper/logger/LoggerHelper";
 import currentRoutes from "./current/Routes";
 import stableRoutes from "./stable/Routes";

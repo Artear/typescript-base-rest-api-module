@@ -8,7 +8,7 @@ import {DummyRouter} from "./DummyRouter";
 export let server: Server = new ServerBuilder()
     .withTimeout(config.get<number>("server.options.timeout"))
     .withSecurity(config.get<boolean>("security.enable"))
-    .withRouter(new DummyRouter(config.get<string>("server.options.apiVersion.stable")))
+    .withRouter(new DummyRouter(config.get<string>("server.options.defaultApiVersion")))
     .withCORS(true)
     .build();
 
