@@ -64,7 +64,7 @@ jobs:
       - run:
           name: Zip the Build
           command: |
-            tar -cf build.tar --exclude='*.map' --exclude='test' --exclude='.git' --directory="./build" .
+            tar -cf build.tar --exclude='*.map' --exclude='test' --exclude='.git' --directory="./dist" .
             tar --append --file=build.tar ./config --exclude='*.map'
             tar --append --file=build.tar ./package.json
             tar --append --file=build.tar ./newrelic.js
