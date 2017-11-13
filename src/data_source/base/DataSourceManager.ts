@@ -132,4 +132,35 @@ export class DataSourceManager {
             dataIndex++;
         });
     }
+
+    public searchData(query: Object): Promise<any> {
+        return this.internal_search_data(0, query);
+    }
+
+    private internal_search_data(index: number, query: Object): Promise<any> {
+        let dataSource = this.dataSources[index];
+        return new Promise((resolve, reject) => {
+            if (!!dataSource) {
+                dataSource.searchData(query).then((data) => {
+                    if (!!data) {
+                        resolve(data);
+                    } else {
+                        index++;
+                        // try to search in the next datasource
+                        this.internal_search_data(index, query).then((data) => {
+                            resolve(data);
+                        }).catch((err) => {
+                            LoggerHelper.getDefaultHandler().error(err.message);
+                            reject(err);
+                        });
+                    }
+                }).catch((err) => {
+                    LoggerHelper.getDefaultHandler().error(err.message);
+                    reject(err);
+                });
+            } else {
+                reject(new ResourceNotFoundError("Resource not found"));
+            }
+        });
+    }
 }

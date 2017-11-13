@@ -81,4 +81,8 @@ export class ExternalDataSource implements DataSource {
             reject(new InternalServerError("Can not update item to an external datasource"));
         });
     }
+
+    searchData(query: Object): Promise<any> {
+        return new Promise((resolve, reject) => reject(new Error("Not implemented!")));
+    }
 }

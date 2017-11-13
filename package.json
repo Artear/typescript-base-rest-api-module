@@ -70,14 +70,18 @@
     "typescript": "2.1.4"
   },
   "dependencies": {
-    "@types/inquirer": "0.0.35",
     "@types/aws-sdk": "2.7.0",
+    "@types/elasticsearch": "^5.0.17",
+    "@types/inquirer": "0.0.35",
     "@types/joi": "10.0.0",
     "@types/restler": "3.1.5",
     "@types/uuid": "2.0.29",
     "@types/winston": "2.2.0",
     "aws-sdk": "2.7.25",
     "debug": "2.6.0",
+    "elasticsearch": "13.3.1",
+    "fs-extra": "4.0.2",
+    "inquirer": "3.3.0",
     "joi": "10.2.0",
     "newrelic": "1.38.2",
     "restify": "4.3.0",
@@ -85,11 +89,9 @@
     "source-map-support": "0.4.0",
     "typescript-collections": "1.2.3",
     "uuid": "3.0.1",
-    "winston": "^2.3.0",
-    "winston-cloudwatch": "^1.11.3",
-    "yn": "2.0.0",
-    "inquirer": "3.3.0",
-    "fs-extra": "4.0.2"
+    "winston": "2.4.0",
+    "winston-cloudwatch": "1.12.0",
+    "yn": "2.0.0"
   },
   "apidoc": {
     "name": "Typescript API Doc",

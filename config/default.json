@@ -20,6 +20,11 @@
       "keyName": "itemId"
     }
   },
+  "elastic": {
+    "host": "localhost:9200",
+    "index": "",
+    "type": ""
+  },
   "security": {
     "enable": false,
     "token": ""

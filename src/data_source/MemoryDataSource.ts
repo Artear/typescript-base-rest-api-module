@@ -46,4 +46,8 @@ export class MemoryDataSource implements DataSource {
     updateData(key: string, value: Object): Promise<any> {
         throw new InternalServerError("Can not update item to a memory datasource");
     }
+
+    searchData(query: Object): Promise<any> {
+        return new Promise((resolve, reject) => reject(new Error("Not implemented!")));
+    }
 }

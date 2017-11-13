@@ -47,6 +47,10 @@ class DummySource implements DataSource {
         throw Error("Operation not supported!");
     }
 
+    searchData(query: Object): Promise<any> {
+        return new Promise((resolve, reject) => reject(new Error("Not implemented!")));
+    }
+
 }
 
 describe("DataSourceManager Test", function () {
