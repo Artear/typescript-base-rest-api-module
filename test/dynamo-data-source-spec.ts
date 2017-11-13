@@ -1,35 +1,34 @@
 import * as sinon from "sinon";
+import * as chai from "chai";
 import {expect} from "chai";
 import {Connection} from "../src/data_source/dynamo/Connection";
 import {DynamoDataSource} from "../src/data_source/DynamoDataSource";
 import {DynamoDB} from "aws-sdk";
-import DocumentClient = DynamoDB.DocumentClient;
 import {itemMock} from "./mocks/itemMock";
 import {mockLoader} from "./mocks/mockHelper";
-import * as chai from "chai";
+import DocumentClient = DynamoDB.DocumentClient;
 
 
 describe("DynamoDataSource Test", function () {
-
-    const connectionStub = sinon.stub(Connection, "getInstance", function () {
-        return documentClient;
-    });
 
     let documentClientStub;
     let documentPutClientStub;
     let dataSource: DynamoDataSource;
     let mockedBody;
     let documentClient;
+    const connectionStub = sinon.stub(Connection, "getInstance", function () {
+        return documentClient;
+    });
 
     beforeEach(() => {
         mockedBody = mockLoader(itemMock);
         dataSource = new DynamoDataSource();
         documentClient = new DocumentClient();
         documentClientStub = sinon.stub(documentClient, "get", function (params, callback) {
-            callback(null, { Item: mockedBody});
+            callback(null, {Item: mockedBody});
         });
 
-        documentPutClientStub = sinon.stub(documentClient, "put",  function(params, callback){
+        documentPutClientStub = sinon.stub(documentClient, "put", function (params, callback) {
             callback(null, mockedBody);
         });
 
@@ -44,10 +43,11 @@ describe("DynamoDataSource Test", function () {
         const key = "some_key";
         const fields = "itemId";
         documentClientStub.restore();
-        documentClientStub = sinon.stub(documentClient, "get", function (params: any, next: (err: any, data: any) => void) {
-            expect(params["ProjectionExpression"]).to.be.equal(fields);
-            done();
-        });
+        documentClientStub = sinon.stub(documentClient, "get",
+            function (params: any, next: (err: any, data: any) => void) {
+                expect(params["ProjectionExpression"]).to.be.equal(fields);
+                done();
+            });
 
         dataSource.getData(key, fields).then();
     });
