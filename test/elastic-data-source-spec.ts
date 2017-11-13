@@ -1,33 +1,40 @@
 import * as sinon from "sinon";
 import {expect} from "chai";
-import {Connection} from "../src/data_source/dynamo/Connection";
-import {ElasticSearchDataSource} from "../src/data_source/ElasticSearchDatasource";
-import {DynamoDB} from "aws-sdk";
-import DocumentClient = DynamoDB.DocumentClient;
-import {itemMock} from "./mocks/itemMock";
+import * as Elasticsearch from "elasticsearch";
+import {ElasticSearchDataSource} from "../src/data_source/elastic/ElasticSearchDatasource";
+import {ElasticSearchConnection} from "../src/data_source/elastic/ElasticSearchConnection";
+import {elasticResponseMock} from "./mocks/elasticSearchResponseMock";
 import {mockLoader} from "./mocks/mockHelper";
 import * as chai from "chai";
 
 
 describe("ElasticSearchDataSource Test", function () {
 
-    const connectionStub = sinon.stub(Connection, "getInstance", function () {
-        return documentClient;
+    const connectionStub = sinon.stub(ElasticSearchConnection, "getInstance", function () {
+        return Elasticsearch.Client;
     });
 
     let dataSource: ElasticSearchDataSource;
     let mockedBody;
-    let documentClient;
+    let documentClientStub;
+    let clientStub: Elasticsearch.Client = new Elasticsearch.Client({});
 
     beforeEach(() => {
-        mockedBody = mockLoader(itemMock);
+        mockedBody = mockLoader(elasticResponseMock);
         dataSource = new ElasticSearchDataSource();
+        documentClientStub = sinon.stub(clientStub, "search", function(params, callback) {
+            callback(null, mockedBody);
+        });
     });
 
     after(() => {
+        documentClientStub.restore();
     });
 
-    it("Updated Should return item id updated", (done: Function) => {
-
+    it("Should return search resulset from elastic", (done: Function) => {
+        dataSource.searchData({ q: "some text"}).then(function (data) {
+            chai.expect(data).to.equal(mockedBody);
+            done();
+        });
     });
 });
