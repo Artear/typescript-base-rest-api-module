@@ -264,7 +264,10 @@ describe("DataSourceManager Test", function () {
         });
         let manager: DataSourceManager =
             new DataSourceManager(mainSource, slaveSource1);
-        manager.putData(key, dummy_data).catch(done());
+        manager.putData(key, dummy_data).catch((err) => {
+            expect(err).instanceOf(InternalServerError);
+            done();
+        });
     });
 
     it("Should failed if getData fail on main datasource", function (done: Function) {
