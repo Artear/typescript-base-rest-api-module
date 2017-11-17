@@ -7,7 +7,6 @@ export default class ItemSearchService extends BaseService {
     static controller: ItemController = new ItemController();
 
     public static get(req: Request, res: Response, next: Next): void {
-        console.log("SEARCH", req.query);
         const query: string = req.query.q;
         ItemSearchService.controller.search(query).then((data) => {
             res.send(200, data);
