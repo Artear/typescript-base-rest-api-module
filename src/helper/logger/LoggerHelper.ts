@@ -6,7 +6,7 @@ export class LoggerHelper {
 
     private loggerHelper: LogHandler;
 
-    private static instance : LoggerHelper = null;
+    private static instance: LoggerHelper = null;
 
     constructor(env?: string) {
         switch (env) {
@@ -21,9 +21,10 @@ export class LoggerHelper {
     public getHandler(): LogHandler {
         return this.loggerHelper;
     }
+
     public static getDefaultHandler(): LogHandler {
         if (LoggerHelper.instance === null)
-            LoggerHelper.instance = new LoggerHelper(process.env["NODE_ENV"])
+            LoggerHelper.instance = new LoggerHelper(process.env["NODE_ENV"]);
         return LoggerHelper.instance.getHandler();
     }
 }

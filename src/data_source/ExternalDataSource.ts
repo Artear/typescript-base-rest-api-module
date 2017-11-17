@@ -1,8 +1,9 @@
 import {DataSource} from "./base/DataSource";
-import {NotAcceptableError, BadRequestError, ServiceUnavailableError, InternalServerError} from "restify";
+import {BadRequestError, InternalServerError, NotAcceptableError, ServiceUnavailableError} from "restify";
 import * as restler from "restler";
 import * as config from "config";
 import {ExternalUrlBuilder} from "./ExternalUrlBuilder";
+import {LoggerHelper} from "../helper/logger/LoggerHelper";
 
 /**
  * Class that represents an external data source (fallback to fetch external data)
@@ -21,15 +22,21 @@ export class ExternalDataSource implements DataSource {
                 let path = this.urlBuilder.getResourceUrlOrThrow(key);
 
                 if (!!path) {
+
+                    LoggerHelper.getDefaultHandler().info(`Request item from ${path}`);
+
                     restler.get(path, {timeout: config.get<number>("server.options.timeout")})
                         .on("timeout", () => {
+                            LoggerHelper.getDefaultHandler().error(`ExternalDataSource timeout`);
                             reject(new ServiceUnavailableError("External data source not respond"));
                         })
-                        .on("fail", (data, response) => {
-                            reject(new BadRequestError(data.statusMessage));
+                        .on("fail", (err, response) => {
+                            LoggerHelper.getDefaultHandler().error(`ExternalDataSource fail: ${err}`);
+                            reject(new BadRequestError(err));
                         })
                         .on("error", (err, response) => {
-                            reject(new ServiceUnavailableError(err.statusMessage));
+                            LoggerHelper.getDefaultHandler().error(`ExternalDataSource error: ${err}`);
+                            reject(new ServiceUnavailableError(err));
                         })
                         .on("success", (result) => {
                             resolve(result);
@@ -54,15 +61,21 @@ export class ExternalDataSource implements DataSource {
             try {
                 let path = this.urlBuilder.getMultiGetResourceUrl(keys);
                 if (!!path) {
+
+                    LoggerHelper.getDefaultHandler().info(`Request items from ${path}`);
+
                     restler.get(path, {timeout: config.get<number>("server.options.timeout")})
                         .on("timeout", () => {
+                            LoggerHelper.getDefaultHandler().error(`ExternalDataSource timeout`);
                             reject(new ServiceUnavailableError("External data source not respond"));
                         })
-                        .on("fail", (data, response) => {
-                            reject(new BadRequestError(response.statusMessage));
+                        .on("fail", (err, response) => {
+                            LoggerHelper.getDefaultHandler().error(`ExternalDataSource fail: ${err}`);
+                            reject(new BadRequestError(err));
                         })
                         .on("error", (err, response) => {
-                            reject(new ServiceUnavailableError(response.statusMessage));
+                            LoggerHelper.getDefaultHandler().error(`ExternalDataSource: ${err}`);
+                            reject(new ServiceUnavailableError(err));
                         })
                         .on("success", (result) => {
                             resolve(result);

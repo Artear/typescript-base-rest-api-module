@@ -7,6 +7,7 @@ import {InternalServerError, NotFoundError} from "restify";
 import {ElasticSearchDataSource} from "../src/data_source/elastic/ElasticSearchDatasource";
 import {elasticResponseMock} from "./mocks/elasticSearchResponseMock";
 
+
 class DummySource implements DataSource {
 
     getItems(keys: Array<string>, fields?: string): Promise<any> {
@@ -156,19 +157,51 @@ describe("DataSourceManager Test", function () {
         });
     });
 
-    it("Should get error when an item of the data array not exists", function (done: Function) {
-        const keys = ["some_key", "not_found_key"];
+    it("Should get the exists items when an item of the data array not exists", function (done: Function) {
+        const keys = ["exists_key", "exists_key_2", "not_found_key"];
+        const successContent = [{"exists_key": "dummy_info"}, {"exists_key_2": "dummy_info"}];
         const mainSource = new DummySource();
+        const externalSource = new DummySource();
 
-        sinon.stub(mainSource, "getItems").callsFake(function (key: string) {
+        sinon.stub(mainSource, "getItems").callsFake(function (keys: Array<string>) {
             return new Promise((resolve, reject) => {
-                reject(new NotFoundError("Resource not found"));
+                resolve([successContent]);
             });
         });
 
-        let manager: DataSourceManager = new DataSourceManager(mainSource);
+        sinon.stub(externalSource, "getItems").callsFake(function (keys: Array<string>) {
+            return new Promise((resolve, reject) => {
+                reject("Not content");
+            });
+        });
+
+        let manager: DataSourceManager = new DataSourceManager(mainSource, externalSource);
+        manager.getItems(keys).then((data) => {
+            expect(data[0]).equal(successContent);
+            done();
+        });
+    });
+
+    it("Should fail when not exists all items in the sources", function (done: Function) {
+        const keys = ["not_exists_key", "not_exists_key_2"];
+        const mainSource = new DummySource();
+        const externalSource = new DummySource();
+
+        sinon.stub(mainSource, "getItems").callsFake(function (keys: Array<string>) {
+            return new Promise((resolve, reject) => {
+                reject("Not content");
+            });
+        });
+
+        sinon.stub(externalSource, "getItems").callsFake(function (keys: Array<string>) {
+            return new Promise((resolve, reject) => {
+                reject("Not content");
+            });
+        });
+
+        let manager: DataSourceManager = new DataSourceManager(mainSource, externalSource);
         manager.getItems(keys).catch((data) => {
-            expect(data.message).to.be.equal("Resource not found");
+            expect(data).equal("Not content");
             done();
         });
     });
@@ -238,7 +271,10 @@ describe("DataSourceManager Test", function () {
         });
         let manager: DataSourceManager =
             new DataSourceManager(mainSource, slaveSource1);
-        manager.putData(key, dummy_data).catch(done());
+        manager.putData(key, dummy_data).catch((err) => {
+            expect(err).instanceOf(InternalServerError);
+            done();
+        });
     });
 
     it("Should failed if getData fail on main datasource", function (done: Function) {
@@ -253,7 +289,10 @@ describe("DataSourceManager Test", function () {
         });
         let manager: DataSourceManager =
             new DataSourceManager(mainSource, slaveSource1);
-        manager.getData(key, dummy_data).catch(done());
+        manager.getData(key, dummy_data).catch((err) => {
+            expect(err).instanceOf(InternalServerError);
+            done();
+        });
     });
 
     it("Should return search result from elasticsearch ", (done) => {

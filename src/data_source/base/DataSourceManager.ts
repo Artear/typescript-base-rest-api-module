@@ -1,5 +1,5 @@
 import {DataSource} from "./DataSource";
-import {ResourceNotFoundError, ServiceUnavailableError, InternalServerError} from "restify";
+import {InternalServerError, ResourceNotFoundError, ServiceUnavailableError} from "restify";
 import {LoggerHelper} from "../../helper/logger/LoggerHelper";
 
 export class DataSourceManager {
@@ -88,7 +88,7 @@ export class DataSourceManager {
         });
     }
 
-    private internal_get_list(index: number, keys: Array<string>, fields: string): Promise<any> {
+    private internal_get_list(index: number, keys: Array<string>, fields: string, items?: Array<any>): Promise<any> {
         let dataSource = this.dataSources[index];
         return new Promise((resolve, reject) => {
             if (!!dataSource) {
@@ -102,7 +102,7 @@ export class DataSourceManager {
                         resolve(data);
                     } else {
                         index++;
-                        this.internal_get_list(index, keys, fields).then((data) => {
+                        this.internal_get_list(index, keys, fields, data).then((data) => {
                             resolve(data);
                         }).catch((err) => {
                             LoggerHelper.getDefaultHandler().error(err.message);
@@ -110,8 +110,14 @@ export class DataSourceManager {
                         });
                     }
                 }).catch((err) => {
-                    LoggerHelper.getDefaultHandler().error(err.message);
-                    reject(err);
+                    if (!!items) {
+                        LoggerHelper.getDefaultHandler().warn(`Some items fail from: ${keys}`);
+                        resolve(items);
+                    }
+                    else {
+                        LoggerHelper.getDefaultHandler().error(err.message);
+                        reject(err);
+                    }
                 });
             } else {
                 reject(new ResourceNotFoundError("Resource not found"));
