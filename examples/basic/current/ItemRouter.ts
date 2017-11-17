@@ -1,5 +1,6 @@
 import {RouterConfig} from "../../../src/router/BaseRouter";
 import ItemService from "./ItemService";
+import ItemSearchService from "./ItemSearchService";
 
 export class ItemRouter extends RouterConfig {
     protected onConfig(): void {
@@ -9,5 +10,6 @@ export class ItemRouter extends RouterConfig {
         this.put("/items", ItemService.update);
         this.opts("/items", ItemService.options);
         this.patch("/items", ItemService.patch);
+        this.get("/search", ItemSearchService.get);
     }
 }

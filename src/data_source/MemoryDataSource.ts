@@ -46,4 +46,9 @@ export class MemoryDataSource implements DataSource {
     updateData(key: string, value: Object): Promise<any> {
         throw new InternalServerError("Can not update item to a memory datasource");
     }
+
+    searchData(query: Object): Promise<any> {
+        console.log("searcg data");
+        return new Promise((resolve, reject) => resolve(null));
+    }
 }

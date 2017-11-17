@@ -8,3 +8,4 @@ npm-debug.log
 error.log
 yarn.lock
 newrelic_agent.log
+.vscode/settings.json

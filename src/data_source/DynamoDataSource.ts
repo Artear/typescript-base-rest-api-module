@@ -80,4 +80,8 @@ export class DynamoDataSource implements DataSource {
             });
         });
     }
+
+    searchData(query: Object): Promise<any> {
+        return new Promise((resolve, reject) => resolve(null));
+    }
 }

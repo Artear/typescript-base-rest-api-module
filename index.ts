@@ -26,6 +26,10 @@ export {DynamoDataSource} from "./src/data_source/DynamoDataSource";
 
 export {Connection} from "./src/data_source/dynamo/Connection";
 
+export {ElasticSearchDataSource} from "./src/data_source/elastic/ElasticSearchDatasource";
+
+export {ElasticSearchConnection} from "./src/data_source/elastic/ElasticSearchConnection";
+
 export {MemoryDataSource} from "./src/data_source/MemoryDataSource";
 
 export {ExternalUrlBuilder} from "./src/data_source/ExternalUrlBuilder";

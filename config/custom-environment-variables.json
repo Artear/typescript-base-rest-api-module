@@ -17,6 +17,11 @@
     }
 
   },
+  "elastic": {
+    "host": "ELASTIC_HOST",
+    "index": "ELASTIC_INDEX",
+    "type": "ELASTIC_TYPE"
+  },
   "security": {
     "enable": "SECURITY_ENABLE",
     "token": "SECURITY_TOKEN"

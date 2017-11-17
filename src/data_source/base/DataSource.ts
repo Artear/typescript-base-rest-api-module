@@ -7,4 +7,6 @@ export declare interface DataSource {
     getItems(keys: Array<string>, fields?: string): Promise<any>;
 
     updateData(key: string, value: Object): Promise<any>;
+
+    searchData(query: any): Promise<any>;
 }

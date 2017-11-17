@@ -11,20 +11,20 @@ import DocumentClient = DynamoDB.DocumentClient;
 
 describe("DynamoDataSource Test", function () {
 
-    const connectionStub = sinon.stub(Connection, "getInstance").callsFake(function () {
-        return documentClient;
-    });
-
     let documentClientStub;
     let documentPutClientStub;
     let dataSource: DynamoDataSource;
     let mockedBody;
     let documentClient;
+    const connectionStub = sinon.stub(Connection, "getInstance", function () {
+        return documentClient;
+    });
 
     beforeEach(() => {
         mockedBody = mockLoader(itemMock);
         dataSource = new DynamoDataSource();
         documentClient = new DocumentClient();
+
         documentClientStub = sinon.stub(documentClient, "get").callsFake(function (params, callback) {
             if (params.Key.itemId === mockedBody.itemId) {
                 callback(null, {Item: mockedBody});

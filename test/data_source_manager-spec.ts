@@ -3,7 +3,10 @@ import {DataSourceManager} from "../src/data_source/base/DataSourceManager";
 import * as sinon from "sinon";
 import {expect} from "chai";
 import Dictionary from "typescript-collections/dist/lib/Dictionary";
-import {InternalServerError} from "restify";
+import {InternalServerError, NotFoundError} from "restify";
+import {ElasticSearchDataSource} from "../src/data_source/elastic/ElasticSearchDatasource";
+import {elasticResponseMock} from "./mocks/elasticSearchResponseMock";
+
 
 class DummySource implements DataSource {
 
@@ -45,6 +48,10 @@ class DummySource implements DataSource {
 
     filterData(field: string, value: string): Promise<any> {
         throw Error("Operation not supported!");
+    }
+
+    searchData(query: Object): Promise<any> {
+        return new Promise((resolve, reject) => resolve(null));
     }
 
 }
@@ -284,6 +291,19 @@ describe("DataSourceManager Test", function () {
             new DataSourceManager(mainSource, slaveSource1);
         manager.getData(key, dummy_data).catch((err) => {
             expect(err).instanceOf(InternalServerError);
+            done();
+        });
+    });
+
+    it("Should return search result from elasticsearch ", (done) => {
+        const mainSource = new DummySource();
+        const elastic = new ElasticSearchDataSource();
+        sinon.stub(elastic, "searchData").callsFake(() => {
+            return new Promise((resolve, reject) => {
+                resolve(elasticResponseMock);
+            });
+        });
+        new DataSourceManager(mainSource, elastic).searchData("TN-").then((data) => {
             done();
         });
     });
