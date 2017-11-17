@@ -40,7 +40,7 @@ export class DataSourceManager {
     }
 
     public getItems(keys: Array<string>, fields?: string): Promise<any> {
-        return this.internal_get_list(0, keys, fields, null);
+        return this.internal_get_list(0, keys, fields);
     }
 
     public updateData(key: string, value: Object): Promise<any> {
@@ -88,7 +88,7 @@ export class DataSourceManager {
         });
     }
 
-    private internal_get_list(index: number, keys: Array<string>, fields: string, items: Array<any>): Promise<any> {
+    private internal_get_list(index: number, keys: Array<string>, fields: string, items?: Array<any>): Promise<any> {
         let dataSource = this.dataSources[index];
         return new Promise((resolve, reject) => {
             if (!!dataSource) {
