@@ -15,7 +15,7 @@ describe("ElasticSearchDataSource Test", function () {
     beforeEach(() => {
         mockedBody = mockLoader(elasticResponseMock);
         dataSource = new ElasticSearchDataSource();
-        connectStub = sinon.stub(ElasticSearchConnection, "getInstance", function () {
+        connectStub = sinon.stub(ElasticSearchConnection, "getInstance").callsFake(function () {
             return {
                 search: (params, callback) => callback(null, mockedBody)
             }
@@ -26,8 +26,8 @@ describe("ElasticSearchDataSource Test", function () {
         connectStub.restore();
     });
 
-    it("Should return search resultset from elastic", (done: Function) => {
-        dataSource.searchData({q: "some text"}).then(function (data) {
+    it("Should return search resultset from elastic text search", (done: Function) => {
+        dataSource.searchData("some text").then(function (data) {
             chai.expect(data).to.equal(mockedBody);
             done();
         });
@@ -35,7 +35,7 @@ describe("ElasticSearchDataSource Test", function () {
 
     it("Should return error ECONNREFUSED from elastic if elasticsearch engine is not available", (done: Function) => {
         connectStub.restore();
-        connectStub = sinon.stub(ElasticSearchConnection, "getInstance", function () {
+        connectStub = sinon.stub(ElasticSearchConnection, "getInstance").callsFake(function () {
             return {
                 search: (params, callback) => {
                     throw(new Error("ECONNREFUSED"));

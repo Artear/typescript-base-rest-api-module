@@ -5,10 +5,10 @@ import {itemMock} from "./mocks/itemMock";
 import {mockLoader} from "./mocks/mockHelper";
 import {server as server} from "../examples/basic/index";
 import * as config from "config";
-import chaiHttp = require("chai-http");
 import {Model} from "../examples/basic/itemModel";
 import ItemService from "../examples/basic/current/ItemService";
 import {server as dummy_server} from "./mocks/DummyServer";
+import chaiHttp = require("chai-http");
 
 let should = chai.should();
 
@@ -22,12 +22,12 @@ describe("Services validation test", () => {
 
     beforeEach(() => {
         mockedBody = mockLoader(itemMock);
-        ItemServiceGetDataStub = sinon.stub(ItemService.controller, "getItem", function (key: string) {
+        ItemServiceGetDataStub = sinon.stub(ItemService.controller, "getItem").callsFake(function (key: string) {
             return new Promise((resolve, reject) => {
                 resolve(mockedBody);
             });
         });
-        ItemServicePutDataStub = sinon.stub(ItemService.controller, "createItem", function (key: string) {
+        ItemServicePutDataStub = sinon.stub(ItemService.controller, "createItem").callsFake(function (key: string) {
             return new Promise((resolve, reject) => {
                 resolve(mockedBody);
             });
@@ -163,16 +163,6 @@ describe("Services validation test", () => {
                 res.should.have.status(200);
                 res.body.should.be.a("string");
                 chai.expect(res.body).to.equal("pong");
-                done();
-            });
-    });
-
-    it("GET /items/id should return not found if item doesn't exists", (done) => {
-        ItemServiceGetDataStub.restore();
-        chai.request(server)
-            .get("/items/ab-1234")
-            .end((err, res) => {
-                res.should.have.status(404);
                 done();
             });
     });

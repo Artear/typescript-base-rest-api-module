@@ -43,17 +43,16 @@ export class ElasticSearchDataSource implements DataSource {
     }
 
     private buildQueryObject(query: any) {
-        const queryBody = JSON.parse(query);
-        if (typeof queryBody === "string") {
+        try {
+            const queryBody = JSON.parse(query);
             return {
                 index: config.get<string>("elastic.index"),
-                q: queryBody
+                body: queryBody
             };
-        }
+        } catch (error) {}
         return {
             index: config.get<string>("elastic.index"),
-            body: queryBody
+            q: query
         };
-
     }
 }
