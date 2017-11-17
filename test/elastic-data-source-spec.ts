@@ -3,6 +3,7 @@ import * as chai from "chai";
 import {ElasticSearchDataSource} from "../src/data_source/elastic/ElasticSearchDatasource";
 import {ElasticSearchConnection} from "../src/data_source/elastic/ElasticSearchConnection";
 import {elasticResponseMock} from "./mocks/elasticSearchResponseMock";
+import {elasticSearchGetMock} from "./mocks/elasticSearchGetMock";
 import {mockLoader} from "./mocks/mockHelper";
 
 
@@ -44,6 +45,22 @@ describe("ElasticSearchDataSource Test", function () {
         });
         dataSource.searchData({q: "some text"}).catch(err => {
             chai.expect(err).to.be.an.instanceof(Error);
+            done();
+        });
+    });
+
+
+    it("Should return one item from elastic get ", (done: Function) => {
+        connectStub.restore();
+        connectStub = sinon.stub(ElasticSearchConnection, "getInstance").callsFake(function () {
+            return {
+                get: (params, callback) => {
+                    callback(null, elasticSearchGetMock);
+                }
+            }
+        });
+        dataSource.getData("TN-1234").then(err => {
+            chai.expect(err).to.be.equal(elasticSearchGetMock);
             done();
         });
     });

@@ -4,6 +4,8 @@ import * as sinon from "sinon";
 import {expect} from "chai";
 import Dictionary from "typescript-collections/dist/lib/Dictionary";
 import {InternalServerError, NotFoundError} from "restify";
+import {ElasticSearchDataSource} from "../src/data_source/elastic/ElasticSearchDatasource";
+import {elasticResponseMock} from "./mocks/elasticSearchResponseMock";
 
 class DummySource implements DataSource {
 
@@ -48,7 +50,7 @@ class DummySource implements DataSource {
     }
 
     searchData(query: Object): Promise<any> {
-        return new Promise((resolve, reject) => reject(new Error("Not implemented!")));
+        return new Promise((resolve, reject) => resolve(null));
     }
 
 }
@@ -60,7 +62,7 @@ describe("DataSourceManager Test", function () {
         const dummy_data = "dummy_data";
         const dummySource = new DummySource();
 
-        sinon.stub(dummySource, "getData", function (key: string) {
+        sinon.stub(dummySource, "getData").callsFake(function (key: string) {
             return new Promise((resolve) => {
                 resolve(dummy_data);
             });
@@ -78,7 +80,7 @@ describe("DataSourceManager Test", function () {
         const dummy_data = ["dummy_data", "dummy_data"];
         const dummySource = new DummySource();
 
-        sinon.stub(dummySource, "getItems", function (key: string) {
+        sinon.stub(dummySource, "getItems").callsFake(function (key: string) {
             return new Promise((resolve) => {
                 resolve(dummy_data);
             });
@@ -98,19 +100,19 @@ describe("DataSourceManager Test", function () {
         const dummySource = new DummySource();
         const throwSource = new DummySource();
 
-        sinon.stub(emptySource, "getData", function (key: string) {
+        sinon.stub(emptySource, "getData").callsFake(function (key: string) {
             return new Promise((resolve) => {
                 resolve(null);
             });
         });
 
-        sinon.stub(dummySource, "getData", function (key: string) {
+        sinon.stub(dummySource, "getData").callsFake(function (key: string) {
             return new Promise((resolve) => {
                 resolve(dummy_data);
             });
         });
 
-        sinon.stub(throwSource, "getData", function (key: string) {
+        sinon.stub(throwSource, "getData").callsFake(function (key: string) {
             throw new Error("Shouldn't be calling this");
         });
 
@@ -130,7 +132,7 @@ describe("DataSourceManager Test", function () {
         const slaveSource3 = new DummySource();
         const slaveSource4 = new DummySource();
 
-        sinon.stub(slaveSource4, "getData", () => {
+        sinon.stub(slaveSource4, "getData").callsFake(() => {
             return new Promise((resolve) => {
                 resolve(dummy_data);
             });
@@ -158,7 +160,7 @@ describe("DataSourceManager Test", function () {
         const keys = ["some_key", "not_found_key"];
         const mainSource = new DummySource();
 
-        sinon.stub(mainSource, "getItems", function (key: string) {
+        sinon.stub(mainSource, "getItems").callsFake(function (key: string) {
             return new Promise((resolve, reject) => {
                 reject(new NotFoundError("Resource not found"));
             });
@@ -180,7 +182,7 @@ describe("DataSourceManager Test", function () {
         const slaveSource3 = new DummySource();
         const slaveSource4 = new DummySource();
 
-        sinon.stub(slaveSource4, "getData", () => {
+        sinon.stub(slaveSource4, "getData").callsFake(() => {
             return new Promise((resolve) => {
                 resolve(dummy_data);
             });
@@ -229,7 +231,7 @@ describe("DataSourceManager Test", function () {
         const dummy_data = "slaveSource4";
         const mainSource = new DummySource();
         const slaveSource1 = new DummySource();
-        sinon.stub(mainSource, "putData", () => {
+        sinon.stub(mainSource, "putData").callsFake(() => {
             return new Promise((resolve, reject) => {
                 reject(new InternalServerError());
             });
@@ -244,7 +246,7 @@ describe("DataSourceManager Test", function () {
         const dummy_data = "slaveSource4";
         const mainSource = new DummySource();
         const slaveSource1 = new DummySource();
-        sinon.stub(mainSource, "getData", () => {
+        sinon.stub(mainSource, "getData").callsFake(() => {
             return new Promise((resolve, reject) => {
                 reject(new InternalServerError());
             });
@@ -252,5 +254,18 @@ describe("DataSourceManager Test", function () {
         let manager: DataSourceManager =
             new DataSourceManager(mainSource, slaveSource1);
         manager.getData(key, dummy_data).catch(done());
+    });
+
+    it("Should return search result from elasticsearch ", (done) => {
+        const mainSource = new DummySource();
+        const elastic = new ElasticSearchDataSource();
+        sinon.stub(elastic, "searchData").callsFake(() => {
+            return new Promise((resolve, reject) => {
+                resolve(elasticResponseMock);
+            });
+        });
+        new DataSourceManager(mainSource, elastic).searchData("TN-").then((data) => {
+            done();
+        });
     });
 });
