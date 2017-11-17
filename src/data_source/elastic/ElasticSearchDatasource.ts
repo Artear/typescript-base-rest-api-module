@@ -1,16 +1,15 @@
-import { DataSource } from "../base/DataSource";
-import { ElasticSearchConnection, QueryParams } from "./ElasticSearchConnection";
-import { InternalServerError, NotFoundError } from "restify";
+import {DataSource} from "../base/DataSource";
+import {ElasticSearchConnection} from "./ElasticSearchConnection";
 import * as config from "config";
 
 export class ElasticSearchDataSource implements DataSource {
 
     getData(key: string, fields?: string): Promise<any> {
-        // TODO: multi-index and multi-type support
+        // TODO: add multi-index and multi-type support
         return new Promise((resolve, reject) => {
             ElasticSearchConnection.getInstance().get({
                 index: config.get<string>("elastic.index"),
-                type: config.get<string>("elastic.type"),
+                type: config.get<string>("elastic.type") ? config.get<string>("elastic.type") : "_all",
                 id: key
             }, (error, response) => {
                 if (error)
@@ -19,20 +18,21 @@ export class ElasticSearchDataSource implements DataSource {
             });
         });
     }
+
     putData(key: string, value: any): Promise<any> {
-        throw new Error("Method not implemented.");
+        return new Promise(resolve => resolve(null));
     }
+
     getItems(keys: string[], fields?: string): Promise<any> {
-        throw new Error("Method not implemented.");
+        return new Promise(resolve => resolve(null));
     }
+
     updateData(key: string, value: Object): Promise<any> {
-        throw new Error("Method not implemented.");
+        return new Promise(resolve => resolve(null));
     }
-    searchData(query: QueryParams): Promise<any> {
-        const q = {
-            index: config.get<string>("elastic.index"),
-            query
-        };
+
+    searchData(query: any): Promise<any> {
+        const q = this.buildQueryObject(query);
         return new Promise((resolve, reject) => {
             ElasticSearchConnection.getInstance().search(q, (error, response) => {
                 if (error)
@@ -40,5 +40,20 @@ export class ElasticSearchDataSource implements DataSource {
                 resolve(response);
             });
         });
+    }
+
+    private buildQueryObject(query: any) {
+        const queryBody = JSON.parse(query);
+        if (typeof queryBody === "string") {
+            return {
+                index: config.get<string>("elastic.index"),
+                q: queryBody
+            };
+        }
+        return {
+            index: config.get<string>("elastic.index"),
+            body: queryBody
+        };
+
     }
 }

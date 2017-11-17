@@ -14,6 +14,3 @@ export class ElasticSearchConnection {
         return ElasticSearchConnection.instance;
     }
 }
-
-export class QueryParams implements Elasticsearch.SearchParams {
-}

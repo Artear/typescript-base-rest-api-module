@@ -22,7 +22,7 @@ describe("ElasticSearchDataSource Test", function () {
         });
     });
 
-    after(() => {
+    afterEach(() => {
         connectStub.restore();
     });
 
@@ -35,6 +35,13 @@ describe("ElasticSearchDataSource Test", function () {
 
     it("Should return error ECONNREFUSED from elastic if elasticsearch engine is not available", (done: Function) => {
         connectStub.restore();
+        connectStub = sinon.stub(ElasticSearchConnection, "getInstance", function () {
+            return {
+                search: (params, callback) => {
+                    throw(new Error("ECONNREFUSED"));
+                }
+            }
+        });
         dataSource.searchData({q: "some text"}).catch(err => {
             chai.expect(err).to.be.an.instanceof(Error);
             done();

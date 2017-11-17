@@ -83,6 +83,6 @@ export class ExternalDataSource implements DataSource {
     }
 
     searchData(query: Object): Promise<any> {
-        return new Promise((resolve, reject) => reject(new Error("Not implemented!")));
+        return new Promise((resolve, reject) => resolve(null));
     }
 }

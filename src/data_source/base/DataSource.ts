@@ -8,5 +8,5 @@ export declare interface DataSource {
 
     updateData(key: string, value: Object): Promise<any>;
 
-    searchData(query: Object): Promise<any>;
+    searchData(query: any): Promise<any>;
 }
