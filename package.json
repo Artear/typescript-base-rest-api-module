@@ -15,7 +15,9 @@
     "test": "nyc --reporter=lcov ./node_modules/.bin/ts-mocha $NODE_DEBUG_OPTION ./test/**/*spec.ts",
     "prebasic-example": "npm run build",
     "basic-example": "node dist/examples/basic/index.js",
-    "postbuild": "cp -R ./tools/version-promote/scratch ./dist/tools/version-promote/ "
+    "postbuild": "npm run copy-scratch && npm run copy-json",
+    "copy-scratch": "cp -R ./tools/version-promote/scratch ./dist/tools/version-promote/ ",
+    "copy-json": "find ./examples -name '*.json' -type f -exec cp {} ./dist/{} \\;"
   },
   "bin": {
     "version-promote": "./dist/tools/version-promote/index.js"

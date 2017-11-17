@@ -3,15 +3,14 @@ import {NotAcceptableError, UnprocessableEntityError} from "restify";
 import * as UUID from "uuid";
 import {LoggerHelper} from "../../src/helper/logger/LoggerHelper";
 import {MemoryDataSource} from "../../src/data_source/MemoryDataSource";
-import {Model} from "./itemModel";
-import Item = Model.Item;
+import {ElasticSearchDataSource} from "../../src/data_source/elastic/ElasticSearchDatasource";
 
 /**
  * Class that abstract access of database for article services.
  */
 export class ItemController {
 
-    static dataManager: DataSourceManager = new DataSourceManager(new MemoryDataSource());
+    static dataManager: DataSourceManager = new DataSourceManager(new MemoryDataSource(), new ElasticSearchDataSource());
 
     public createItem(item: any) {
         return new Promise(function (resolve, reject) {
@@ -45,6 +44,16 @@ export class ItemController {
     public getItem(key: string, fields?: string) {
         return new Promise(function (resolve, reject) {
             ItemController.dataManager.getData(key, fields).then((data) => {
+                resolve(data);
+            }).catch((err) => {
+                reject(err);
+            });
+        });
+    }
+
+    public search(query: string) {
+        return new Promise(function (resolve, reject) {
+            ItemController.dataManager.searchData(query).then((data) => {
                 resolve(data);
             }).catch((err) => {
                 reject(err);

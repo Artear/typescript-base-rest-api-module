@@ -48,6 +48,7 @@ export class MemoryDataSource implements DataSource {
     }
 
     searchData(query: Object): Promise<any> {
-        return new Promise((resolve, reject) => reject(new Error("Not implemented!")));
+        console.log("searcg data");
+        return new Promise((resolve, reject) => resolve(null));
     }
 }

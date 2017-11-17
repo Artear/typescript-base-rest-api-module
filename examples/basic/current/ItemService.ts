@@ -1,4 +1,4 @@
-import {Next, NotFoundError, NotImplementedError, Request, Response, NotAcceptableError} from "restify";
+import {Next, NotAcceptableError, NotFoundError, NotImplementedError, Request, Response} from "restify";
 import {BaseService} from "../../../src/services/BaseService";
 import {RestifyValidation} from "../../../src/helper/validation/restify/validation";
 import {itemSchemaPost, itemSchemaUpdate} from "./itemSchema";
@@ -67,9 +67,9 @@ export default class ItemService extends BaseService {
             res.send(new NotAcceptableError("Some of the items don't exists!", err));
         });
     }
+
     public static patch(req: Request, res: Response, next: Next): void {
         res.send(new NotImplementedError());
         return next();
     }
-
 }
