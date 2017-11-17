@@ -8,7 +8,7 @@ export class LogBuilder {
     private level: string;
 
     constructor() {
-        this.level = 'info';
+        this.level = "info";
     }
 
     public withLogger(logger: Logger): LogBuilder {
@@ -23,10 +23,10 @@ export class LogBuilder {
 
     public build(): LogHandler {
 
-        //default logger
+        // default logger
         this.withLogger(new ServerLogger);
 
-        //apply log level
+        // apply log level
         this.loggers.forEach((logger: Logger) => {
             logger.setLevel(this.level);
         });
