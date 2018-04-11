@@ -1,6 +1,6 @@
 import * as chai from "chai";
 import * as sinon from "sinon";
-import {UnprocessableEntityError} from "restify";
+import {UnprocessableEntityError} from "restify-errors";
 import {itemMock} from "./mocks/itemMock";
 import {mockLoader} from "./mocks/mockHelper";
 import {server as server} from "../examples/basic/index";

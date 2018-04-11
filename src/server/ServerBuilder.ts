@@ -1,10 +1,16 @@
 import {RouterConfig} from "../router/BaseRouter";
 import * as restify from "restify";
-import {NotAuthorizedError, RequestHandler, Server, ServerOptions} from "restify";
+import {RequestHandler, Server, ServerOptions} from "restify";
+import {NotAuthorizedError} from "restify-errors";
 import serverCharset from "./ServerCharset";
 import * as config from "config";
+import * as corsMiddleware from "restify-cors-middleware";
 
 const yn = require("yn");
+
+const queryParser = restify.plugins.queryParser({
+    mapParams: true
+});
 
 export class ServerBuilder {
 
@@ -83,7 +89,7 @@ export class ServerBuilder {
         if (!!this._bodyParser) {
             server.use(this._bodyParser);
         } else {
-            server.use(restify.bodyParser());
+            server.use(queryParser);
         }
 
         if (!!this._charset) {
@@ -95,7 +101,7 @@ export class ServerBuilder {
         if (!!this._queryParser) {
             server.use(this._queryParser);
         } else {
-            server.use(restify.queryParser());
+            server.use(queryParser);
         }
 
         if (!!this._sanitizer) {
@@ -132,7 +138,7 @@ export class ServerBuilder {
         }
 
         if (this._cors) {
-            server.use(restify.CORS({"origins": ["*"]}));
+            server.use(corsMiddleware({"origins": ["*"]}));
         }
 
         this._routerConfig.forEach((config: RouterConfig) => {

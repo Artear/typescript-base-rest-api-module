@@ -8,9 +8,9 @@ let server = restify.createServer({
     name: "Typescript Api Mock"
 });
 
-server.use(restify.acceptParser(server.acceptable));
-server.use(restify.queryParser());
-server.use(restify.urlEncodedBodyParser());
+server.use(restify.plugins.acceptParser(server.acceptable));
+server.use(restify.plugins.queryParser());
+server.use(restify.plugins.urlEncodedBodyParser());
 server.pre(restify.pre.sanitizePath());
 
 server.get("/items/:id", (req: Request, res: Response, next: Next) => {

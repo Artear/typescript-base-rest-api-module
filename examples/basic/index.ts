@@ -4,12 +4,17 @@ if (config.get<boolean>("newrelic.enable")) {
     require("newrelic");
 }
 
-import {queryParser, Server, ServerOptions} from "restify";
+import * as restify from "restify";
+import {Server, ServerOptions} from "restify";
 import {OptionsBuilder} from "../../src/server/OptionsBuilder";
 import {ServerBuilder} from "../../src/server/ServerBuilder";
 import {LoggerHelper} from "../../src/helper/logger/LoggerHelper";
 import currentRoutes from "./current/Routes";
 import stableRoutes from "./stable/Routes";
+
+const queryParser = restify.plugins.queryParser({
+    mapParams: true
+});
 
 let options: ServerOptions = new OptionsBuilder()
     .withName(config.get<string>("server.options.name"))
@@ -23,7 +28,7 @@ export let server: Server = new ServerBuilder()
     .withOptions(options)
     .withRouterList(currentRoutes)
     .withRouterList(stableRoutes)
-    .withQueryParser(queryParser())
+    .withQueryParser(queryParser)
     .withSecurity(config.get<boolean>("security.enable"))
     .withCORS(false)
     .build();

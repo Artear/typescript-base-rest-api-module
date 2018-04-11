@@ -1,4 +1,5 @@
-import {Next, NotFoundError, NotImplementedError, Request, Response, NotAcceptableError} from "restify";
+import {Next, Request, Response} from "restify";
+import {NotFoundError, NotImplementedError, NotAcceptableError} from "restify-errors";
 import {BaseService} from "../../../src/services/BaseService";
 import {RestifyValidation} from "../../../src/helper/validation/restify/validation";
 import {itemSchemaPost, itemSchemaUpdate} from "./itemSchema";

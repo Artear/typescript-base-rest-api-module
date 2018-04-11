@@ -1,5 +1,5 @@
 import {DataSourceManager} from "../../src/data_source/base/DataSourceManager";
-import {NotAcceptableError, UnprocessableEntityError} from "restify";
+import {NotAcceptableError, UnprocessableEntityError} from "restify-errors";
 import * as UUID from "uuid";
 import {LoggerHelper} from "../../src/helper/logger/LoggerHelper";
 import {MemoryDataSource} from "../../src/data_source/MemoryDataSource";
