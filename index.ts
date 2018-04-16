@@ -49,3 +49,5 @@ export {ServerBuilder} from "./src/server/ServerBuilder";
 export {OptionsBuilder} from "./src/server/OptionsBuilder";
 
 export {RouterListBuilder} from "./src/router/RouterListBuilder";
+
+export {ServerRouterConfig} from "./src/server/ServerRouterConfig";
