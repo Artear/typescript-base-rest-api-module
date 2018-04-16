@@ -11,6 +11,7 @@ import {ServerBuilder} from "../../src/server/ServerBuilder";
 import {LoggerHelper} from "../../src/helper/logger/LoggerHelper";
 import currentRoutes from "./current/Routes";
 import stableRoutes from "./stable/Routes";
+import {ServerRouterConfig} from "../../src/server/ServerRouterConfig";
 
 const queryParser = restify.plugins.queryParser({
     mapParams: true
@@ -23,7 +24,7 @@ let options: ServerOptions = new OptionsBuilder()
 
 
 
-export let server: Server = new ServerBuilder()
+export let server: Server = new ServerBuilder(new ServerRouterConfig())
     .withTimeout(config.get<number>("server.options.timeout"))
     .withOptions(options)
     .withRouterList(currentRoutes)

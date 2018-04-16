@@ -1,8 +1,9 @@
-import {Server, RequestHandler} from "restify";
+import {RequestHandler} from "restify";
+import {ServerRouterConfig} from "../server/ServerRouterConfig";
 
 
 export abstract class RouterConfig {
-    private _routers: Array<Config> = [];
+    private _routers: Array<RouterConfigItem> = [];
     private _version: any;
 
     constructor(version?: any) {
@@ -10,62 +11,61 @@ export abstract class RouterConfig {
     }
 
     protected get(route: any, callback: RequestHandler): void {
-        this._routers.push(new Config(HttpVerb.GET, route, callback, this._version));
+        this._routers.push(new RouterConfigItem(HttpVerb.GET, route, callback, this._version));
     }
 
     protected head(route: any, callback: RequestHandler): void {
-        this._routers.push(new Config(HttpVerb.HEAD, route, callback, this._version));
+        this._routers.push(new RouterConfigItem(HttpVerb.HEAD, route, callback, this._version));
     }
 
     protected post(route: any, callback: RequestHandler): void {
-        this._routers.push(new Config(HttpVerb.POST, route, callback, this._version));
+        this._routers.push(new RouterConfigItem(HttpVerb.POST, route, callback, this._version));
     }
 
     protected put(route: any, callback: RequestHandler): void {
-        this._routers.push(new Config(HttpVerb.PUT, route, callback, this._version));
+        this._routers.push(new RouterConfigItem(HttpVerb.PUT, route, callback, this._version));
     }
 
     protected del(route: any, callback: RequestHandler): void {
-        this._routers.push(new Config(HttpVerb.DELETE, route, callback, this._version));
+        this._routers.push(new RouterConfigItem(HttpVerb.DELETE, route, callback, this._version));
     }
 
     protected opts(route: any, callback: RequestHandler): void {
-        this._routers.push(new Config(HttpVerb.OPTIONS, route, callback, this._version));
+        this._routers.push(new RouterConfigItem(HttpVerb.OPTIONS, route, callback, this._version));
     }
 
     protected patch(route: any, callback: RequestHandler): void {
-        this._routers.push(new Config(HttpVerb.PATCH, route, callback, this._version));
+        this._routers.push(new RouterConfigItem(HttpVerb.PATCH, route, callback, this._version));
     }
 
     protected abstract onConfig(): void;
 
-    public apply(server: Server): void {
+    public apply(serverRouterConfig: ServerRouterConfig): void {
 
         this.onConfig();
 
-        this._routers.forEach((router: Config) => {
-
+        this._routers.forEach((router: RouterConfigItem) => {
             switch (router.verb) {
                 case HttpVerb.GET:
-                    server.get({path: router.route, version: router.version }, router.callback);
+                    serverRouterConfig.addGetRoute(router);
                     break;
                 case HttpVerb.HEAD:
-                    server.head({path: router.route, version: router.version }, router.callback);
+                    serverRouterConfig.addHeadRoute(router);
                     break;
                 case HttpVerb.POST:
-                    server.post({path: router.route, version: router.version }, router.callback);
+                    serverRouterConfig.addPostRoute(router);
                     break;
                 case HttpVerb.PUT:
-                    server.put({path: router.route, version: router.version }, router.callback);
+                    serverRouterConfig.addPutRoute(router);
                     break;
                 case HttpVerb.DELETE:
-                    server.del({path: router.route, version: router.version }, router.callback);
+                    serverRouterConfig.addDeleteRoute(router);
                     break;
                 case HttpVerb.OPTIONS:
-                    server.opts({path: router.route, version: router.version }, router.callback);
+                    serverRouterConfig.addOptionsRoute(router);
                     break;
                 case HttpVerb.PATCH:
-                    server.patch({path: router.route, version: router.version }, router.callback);
+                    serverRouterConfig.addPatchRoute(router);
                     break;
             }
 
@@ -74,11 +74,11 @@ export abstract class RouterConfig {
 }
 
 
-enum HttpVerb {
+export enum HttpVerb {
     GET, HEAD, POST, PUT, DELETE, OPTIONS, PATCH
 }
 
-class Config {
+export class RouterConfigItem {
     private _verb: HttpVerb;
     private _route: any;
     private _callback: RequestHandler;

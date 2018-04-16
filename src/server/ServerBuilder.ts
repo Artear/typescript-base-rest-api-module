@@ -5,6 +5,7 @@ import {NotAuthorizedError} from "restify-errors";
 import serverCharset from "./ServerCharset";
 import * as config from "config";
 import * as corsMiddleware from "restify-cors-middleware";
+import {ServerRouterConfig} from "./ServerRouterConfig";
 
 const yn = require("yn");
 
@@ -16,6 +17,7 @@ export class ServerBuilder {
 
     private _serverOptions: ServerOptions;
     private _routerConfig: Array<RouterConfig>;
+    private _routerConfigBuilder: ServerRouterConfig;
     private _sanitizer: RequestHandler;
     private _queryParser: RequestHandler;
     private _charset: RequestHandler;
@@ -24,9 +26,10 @@ export class ServerBuilder {
     private _security: boolean;
     private _cors: boolean;
 
-    constructor() {
+    constructor(routerConfigBuilder: ServerRouterConfig) {
         this._serverOptions = {};
         this._routerConfig = [];
+        this._routerConfigBuilder = routerConfigBuilder;
         this._sanitizer = null;
         this._queryParser = null;
         this._charset = null;
@@ -142,10 +145,11 @@ export class ServerBuilder {
         }
 
         this._routerConfig.forEach((config: RouterConfig) => {
-            config.apply(server);
+            config.apply(this._routerConfigBuilder);
         });
+        this._routerConfigBuilder.apply(server);
 
-        server.pre(function(req, res, next) {
+        server.pre(function (req, res, next) {
             if (!req.headers["accept-version"]) {
                 req.headers["accept-version"] = config.get<string>("server.options.defaultApiVersion");
             }
