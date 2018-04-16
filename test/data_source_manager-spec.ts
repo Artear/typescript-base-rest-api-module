@@ -3,7 +3,7 @@ import {DataSourceManager} from "../src/data_source/base/DataSourceManager";
 import * as sinon from "sinon";
 import {expect} from "chai";
 import Dictionary from "typescript-collections/dist/lib/Dictionary";
-import {InternalServerError, NotFoundError} from "restify";
+import {InternalServerError, NotFoundError} from "restify-errors";
 import {ElasticSearchDataSource} from "../src/data_source/elastic/ElasticSearchDatasource";
 import {elasticResponseMock} from "./mocks/elasticSearchResponseMock";
 

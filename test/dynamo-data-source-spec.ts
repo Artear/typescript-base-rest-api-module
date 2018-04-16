@@ -16,7 +16,7 @@ describe("DynamoDataSource Test", function () {
     let dataSource: DynamoDataSource;
     let mockedBody;
     let documentClient;
-    const connectionStub = sinon.stub(Connection, "getInstance", function () {
+    const connectionStub = sinon.stub(Connection, "getInstance").callsFake(function () {
         return documentClient;
     });
 

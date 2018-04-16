@@ -4,7 +4,7 @@ import {expect} from "chai";
 import {DynamoDB} from "aws-sdk";
 import {itemMock} from "./mocks/itemMock";
 import * as restler from "restler";
-import {BadRequestError, InternalServerError, NotAcceptableError, ServiceUnavailableError} from "restify";
+import {BadRequestError, InternalServerError, NotAcceptableError, ServiceUnavailableError} from "restify-errors";
 import {ExternalDataSource} from "../src/data_source/ExternalDataSource";
 import * as nock from "nock";
 import DocumentClient = DynamoDB.DocumentClient;

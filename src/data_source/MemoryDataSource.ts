@@ -1,6 +1,6 @@
 import {DataSource} from "./base/DataSource";
 import Dictionary from "typescript-collections/dist/lib/Dictionary";
-import {InternalServerError} from "restify";
+import {InternalServerError} from "restify-errors";
 
 /**
  * Used mostly for debugging;

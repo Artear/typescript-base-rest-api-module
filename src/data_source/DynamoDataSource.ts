@@ -1,6 +1,6 @@
 import {DataSource} from "./base/DataSource";
 import {Connection} from "./dynamo/Connection";
-import {InternalServerError, NotFoundError} from "restify";
+import {InternalServerError, NotFoundError} from "restify-errors";
 import * as config from "config";
 
 export class DynamoDataSource implements DataSource {

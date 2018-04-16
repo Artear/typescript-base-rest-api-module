@@ -1,4 +1,5 @@
-import {ServerOptions} from "restify";
+import {ServerOptions, Formatters} from "restify";
+import * as Logger from "bunyan";
 
 
 export class OptionsBuilder {
@@ -6,8 +7,8 @@ export class OptionsBuilder {
     private _options: ServerOptions;
     private _certificate: string;
     private _key: string;
-    private _formatters: Object;
-    private _log: Object;
+    private _formatters: Formatters;
+    private _log: Logger;
     private _name: string = "Some Name";
     private _spdy: Object;
     private _version: string = "0.0.0";
@@ -32,12 +33,12 @@ export class OptionsBuilder {
         return this;
     }
 
-    public withFormatters(value: Object): OptionsBuilder {
+    public withFormatters(value: Formatters): OptionsBuilder {
         this._formatters = value;
         return this;
     }
 
-    public withLog(value: Object): OptionsBuilder {
+    public withLog(value: Logger): OptionsBuilder {
         this._log = value;
         return this;
     }

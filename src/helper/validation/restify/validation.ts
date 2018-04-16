@@ -1,4 +1,5 @@
-import {Next, NotAcceptableError, Request, Response, UnprocessableEntityError} from "restify";
+import {Next, Request, Response} from "restify";
+import {NotAcceptableError, UnprocessableEntityError} from "restify-errors";
 import * as Joi from "joi";
 
 export namespace RestifyValidation {

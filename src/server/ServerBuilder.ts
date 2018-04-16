@@ -1,15 +1,23 @@
 import {RouterConfig} from "../router/BaseRouter";
 import * as restify from "restify";
-import {NotAuthorizedError, RequestHandler, Server, ServerOptions} from "restify";
+import {RequestHandler, Server, ServerOptions} from "restify";
+import {NotAuthorizedError} from "restify-errors";
 import serverCharset from "./ServerCharset";
 import * as config from "config";
+import * as corsMiddleware from "restify-cors-middleware";
+import {ServerRouterConfig} from "./ServerRouterConfig";
 
 const yn = require("yn");
+
+const queryParser = restify.plugins.queryParser({
+    mapParams: true
+});
 
 export class ServerBuilder {
 
     private _serverOptions: ServerOptions;
     private _routerConfig: Array<RouterConfig>;
+    private _routerConfigBuilder: ServerRouterConfig;
     private _sanitizer: RequestHandler;
     private _queryParser: RequestHandler;
     private _charset: RequestHandler;
@@ -18,9 +26,10 @@ export class ServerBuilder {
     private _security: boolean;
     private _cors: boolean;
 
-    constructor() {
+    constructor(routerConfigBuilder: ServerRouterConfig) {
         this._serverOptions = {};
         this._routerConfig = [];
+        this._routerConfigBuilder = routerConfigBuilder;
         this._sanitizer = null;
         this._queryParser = null;
         this._charset = null;
@@ -52,19 +61,25 @@ export class ServerBuilder {
 
     public withSanitizer(sanitizer: RequestHandler) {
         this._sanitizer = sanitizer;
+        return this;
     }
 
     public withQueryParser(queryParser: RequestHandler) {
+        console.warn("restify's queryParser is designed to retrieve data from a url's query string. If you " +
+            "are attempting to read post data from the request's body, please use the bodyParser plugin and the " +
+            "method withBodyParser instead.");
         this._queryParser = queryParser;
         return this;
     }
 
     public withCharset(charset: RequestHandler) {
         this._charset = charset;
+        return this;
     }
 
     public withBodyParser(bodyParser: RequestHandler) {
         this._bodyParser = bodyParser;
+        return this;
     }
 
     public withTimeout(timeout: number): ServerBuilder {
@@ -83,7 +98,7 @@ export class ServerBuilder {
         if (!!this._bodyParser) {
             server.use(this._bodyParser);
         } else {
-            server.use(restify.bodyParser());
+            server.use(queryParser);
         }
 
         if (!!this._charset) {
@@ -95,7 +110,7 @@ export class ServerBuilder {
         if (!!this._queryParser) {
             server.use(this._queryParser);
         } else {
-            server.use(restify.queryParser());
+            server.use(queryParser);
         }
 
         if (!!this._sanitizer) {
@@ -132,14 +147,17 @@ export class ServerBuilder {
         }
 
         if (this._cors) {
-            server.use(restify.CORS({"origins": ["*"]}));
+            const cors = corsMiddleware({"origins": ["*"]});
+            server.pre(cors.preflight);
+            server.use(cors.actual);
         }
 
         this._routerConfig.forEach((config: RouterConfig) => {
-            config.apply(server);
+            config.apply(this._routerConfigBuilder);
         });
+        this._routerConfigBuilder.apply(server);
 
-        server.pre(function(req, res, next) {
+        server.pre(function (req, res, next) {
             if (!req.headers["accept-version"]) {
                 req.headers["accept-version"] = config.get<string>("server.options.defaultApiVersion");
             }

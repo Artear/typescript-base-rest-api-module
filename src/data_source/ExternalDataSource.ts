@@ -1,5 +1,5 @@
 import {DataSource} from "./base/DataSource";
-import {BadRequestError, InternalServerError, NotAcceptableError, ServiceUnavailableError} from "restify";
+import {BadRequestError, InternalServerError, NotAcceptableError, ServiceUnavailableError} from "restify-errors";
 import * as restler from "restler";
 import * as config from "config";
 import {ExternalUrlBuilder} from "./ExternalUrlBuilder";
