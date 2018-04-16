@@ -61,19 +61,25 @@ export class ServerBuilder {
 
     public withSanitizer(sanitizer: RequestHandler) {
         this._sanitizer = sanitizer;
+        return this;
     }
 
     public withQueryParser(queryParser: RequestHandler) {
+        console.warn("restify's queryParser is designed to retrieve data from a url's query string. If you " +
+            "are attempting to read post data from the request's body, please use the bodyParser plugin and the " +
+            "method withBodyParser instead.");
         this._queryParser = queryParser;
         return this;
     }
 
     public withCharset(charset: RequestHandler) {
         this._charset = charset;
+        return this;
     }
 
     public withBodyParser(bodyParser: RequestHandler) {
         this._bodyParser = bodyParser;
+        return this;
     }
 
     public withTimeout(timeout: number): ServerBuilder {
@@ -141,7 +147,9 @@ export class ServerBuilder {
         }
 
         if (this._cors) {
-            server.use(corsMiddleware({"origins": ["*"]}));
+            const cors = corsMiddleware({"origins": ["*"]});
+            server.pre(cors.preflight);
+            server.use(cors.actual);
         }
 
         this._routerConfig.forEach((config: RouterConfig) => {

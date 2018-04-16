@@ -1,6 +1,5 @@
 import * as chai from "chai";
 import * as sinon from "sinon";
-import {UnprocessableEntityError} from "restify-errors";
 import {itemMock} from "./mocks/itemMock";
 import {mockLoader} from "./mocks/mockHelper";
 import {server as server} from "../examples/basic/index";
@@ -40,7 +39,7 @@ describe("Services validation test", () => {
         ItemServicePutDataStub.restore();
     });
 
-    it("Should return http status UnprocessableEntityError (code 422) because 'itemId' has an invalid format", (done) => {
+    it("Should return http status UnprocessableEntity (code 422) because 'itemId' has an invalid format", (done) => {
         mockedBody.itemId = "TN-d11bc1fc-de56-11e6-bf01-fe55135034f3!";
         chai.request(server)
             .post("/items")
@@ -49,14 +48,14 @@ describe("Services validation test", () => {
             .end((err, res) => {
                 res.should.have.status(422);
                 res.body.should.be.a("object");
-                res.body.should.have.property("code").eql("UnprocessableEntityError");
+                res.body.should.have.property("code").eql("UnprocessableEntity");
                 res.body.should.have.property("message").eql("\"itemId\" with value \"TN-d11bc1fc-de56-11e6-bf01-fe55135034f3&#x21;\" fails to match the required pattern: /^[a-z0-9\\-]+$/i");
                 done();
             });
     });
 
 
-    it("Should return http status UnprocessableEntityError (code 422) because 'createdISO' has an invalid format", (done) => {
+    it("Should return http status UnprocessableEntity (code 422) because 'createdISO' has an invalid format", (done) => {
         // JSON with invalid "createdISO" property.
         mockedBody.content.createdISO = "2017-11-03 13:18:05";
 
@@ -67,12 +66,12 @@ describe("Services validation test", () => {
             .end((err, res) => {
                 res.should.have.status(422);
                 res.body.should.be.a("object");
-                res.body.should.have.property("code").eql("UnprocessableEntityError");
+                res.body.should.have.property("code").eql("UnprocessableEntity");
                 done();
             });
     });
 
-    it("Should return http status UnprocessableEntityError (code 422) because 'changedISO' has an invalid format", (done) => {
+    it("Should return http status UnprocessableEntity (code 422) because 'changedISO' has an invalid format", (done) => {
         // JSON with invalid "changedISO" property.
         mockedBody.content.changedISO = "2017-11-03 13:18:05";
         chai.request(server)
@@ -82,12 +81,12 @@ describe("Services validation test", () => {
             .end((err, res) => {
                 res.should.have.status(422);
                 res.body.should.be.a("object");
-                res.body.should.have.property("code").eql("UnprocessableEntityError");
+                res.body.should.have.property("code").eql("UnprocessableEntity");
                 done();
             });
     });
 
-    it("Should return http status UnprocessableEntityError (code 422) because 'title' is not an Object", (done) => {
+    it("Should return http status UnprocessableEntity (code 422) because 'title' is not an Object", (done) => {
         // JSON with invalid "title" property.
         mockedBody.content.title = null;
         chai.request(server)
@@ -97,13 +96,13 @@ describe("Services validation test", () => {
             .end((err, res) => {
                 res.should.have.status(422);
                 res.body.should.be.a("object");
-                res.body.should.have.property("code").eql("UnprocessableEntityError");
+                res.body.should.have.property("code").eql("UnprocessableEntity");
                 res.body.should.have.property("message").eql("\"title\" must be an object");
                 done();
             });
     });
 
-    it("Should return http status UnprocessableEntityError (code 422) because 'body' is not Array", (done) => {
+    it("Should return http status UnprocessableEntity (code 422) because 'body' is not Array", (done) => {
         // JSON with invalid "body" property.
         mockedBody.content.body = null;
 
@@ -114,14 +113,14 @@ describe("Services validation test", () => {
             .end((err, res) => {
                 res.should.have.status(422);
                 res.body.should.be.a("object");
-                res.body.should.have.property("code").eql("UnprocessableEntityError");
+                res.body.should.have.property("code").eql("UnprocessableEntity");
                 res.body.should.have.property("message").eql("\"body\" must be an array");
                 done();
             });
     });
 
 
-    it("Should return http status UnprocessableEntityError (code 422) because 'tagList' is not Array of Strings", (done) => {
+    it("Should return http status UnprocessableEntity (code 422) because 'tagList' is not Array of Strings", (done) => {
         // JSON with invalid "tagList" property.
         mockedBody.content.tagList = null;
 
@@ -132,14 +131,14 @@ describe("Services validation test", () => {
             .end((err, res) => {
                 res.should.have.status(422);
                 res.body.should.be.a("object");
-                res.body.should.have.property("code").eql("UnprocessableEntityError");
+                res.body.should.have.property("code").eql("UnprocessableEntity");
                 res.body.should.have.property("message").eql("\"tagList\" must be an array");
                 done();
             });
     });
 
 
-    it("Should return http status UnprocessableEntityError (code 422) because 'content' property is not defined", (done) => {
+    it("Should return http status UnprocessableEntity (code 422) because 'content' property is not defined", (done) => {
         // invalid JSON without "content" property.
         delete mockedBody.content;
 
@@ -150,7 +149,7 @@ describe("Services validation test", () => {
             .end((err, res) => {
                 res.should.have.status(422);
                 res.body.should.be.a("object");
-                res.body.should.have.property("code").eql("UnprocessableEntityError");
+                res.body.should.have.property("code").eql("UnprocessableEntity");
                 res.body.should.have.property("message").eql("\"content\" is required");
                 done();
             });
@@ -182,7 +181,7 @@ describe("Services validation test", () => {
             .end((err, res) => {
                 res.should.have.status(406);
                 res.body.should.be.a("object");
-                res.body.should.have.property("code").eql("NotAcceptableError");
+                res.body.should.have.property("code").eql("NotAcceptable");
                 done();
             });
     });

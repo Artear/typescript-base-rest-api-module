@@ -13,7 +13,7 @@ import currentRoutes from "./current/Routes";
 import stableRoutes from "./stable/Routes";
 import {ServerRouterConfig} from "../../src/server/ServerRouterConfig";
 
-const queryParser = restify.plugins.queryParser({
+const bodyParser = restify.plugins.bodyParser({
     mapParams: true
 });
 
@@ -29,7 +29,7 @@ export let server: Server = new ServerBuilder(new ServerRouterConfig())
     .withOptions(options)
     .withRouterList(currentRoutes)
     .withRouterList(stableRoutes)
-    .withQueryParser(queryParser)
+    .withBodyParser(bodyParser)
     .withSecurity(config.get<boolean>("security.enable"))
     .withCORS(false)
     .build();
