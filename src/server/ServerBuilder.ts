@@ -17,6 +17,7 @@ export class ServerBuilder {
     private _timeout: number;
     private _security: boolean;
     private _cors: boolean;
+    private _middlewares: RequestHandler[];
 
     constructor() {
         this._serverOptions = {};
@@ -28,6 +29,7 @@ export class ServerBuilder {
         this._timeout = null;
         this._security = false;
         this._cors = true;
+        this._middlewares = [];
     }
 
     public withOptions(serverOptions: ServerOptions): ServerBuilder {
@@ -69,6 +71,11 @@ export class ServerBuilder {
 
     public withCORS(enable: boolean): ServerBuilder {
         this._cors = enable;
+        return this;
+    }
+
+    public withMiddleWare(component) {
+        this._middlewares.push(component);
         return this;
     }
 
@@ -128,6 +135,14 @@ export class ServerBuilder {
 
         if (this._cors) {
             server.use(restify.CORS({"origins": ["*"]}));
+        }
+
+        if (this._middlewares.length > 0) {
+            for (const _middleware in this._middlewares) {
+                if (this._middlewares.hasOwnProperty(_middleware)) {
+                    server.use(this._middlewares[_middleware]);
+                }
+            }
         }
 
         this._routerConfig.forEach((config: RouterConfig) => {
