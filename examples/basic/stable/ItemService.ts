@@ -57,9 +57,18 @@ export default class ItemService extends BaseService {
     }
 
     public static getItems(req: Request, res: Response, next: Next): void {
-        res.send(200, "stable!");
-        return;
+        if (!("id" in req.query)) {
+            res.send(new NotImplementedError("Operation not supported! You must use id filter!"));
+        }
+        const fields: string = (req.params.fields || "");
+        let items = req.query["id"].replace(/\s+/g, "").split(",");
+        ItemService.controller.getItemCollection(items, fields).then((data) => {
+            res.send(200, data);
+        }).catch((err) => {
+            res.send(new NotAcceptableError("Some of the items don't exists!", err));
+        });
     }
+
     public static patch(req: Request, res: Response, next: Next): void {
         res.send(new NotImplementedError());
         return next();
