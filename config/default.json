@@ -33,5 +33,13 @@
     "enable": false,
     "license_key": false,
     "app_name": "typescript-base-rest-api"
+  },
+  "bugsnag": {
+    "enable": false,
+    "api_key": "",
+    "release_stage": "dev"
+  },
+  "morgan": {
+    "format": "combined"
   }
 }

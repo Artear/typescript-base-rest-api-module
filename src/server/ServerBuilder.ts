@@ -13,6 +13,10 @@ const queryParser = restify.plugins.queryParser({
     mapParams: true
 });
 
+const bodyParser = restify.plugins.bodyParser({
+    mapParams: true
+});
+
 export class ServerBuilder {
 
     private _serverOptions: ServerOptions;
@@ -26,6 +30,7 @@ export class ServerBuilder {
     private _security: boolean;
     private _cors: boolean;
     private _middlewares: RequestHandler[];
+    private _uncaughtExceptionHandler: any;
 
     constructor(routerConfigBuilder: ServerRouterConfig) {
         this._serverOptions = {};
@@ -39,6 +44,7 @@ export class ServerBuilder {
         this._security = false;
         this._cors = true;
         this._middlewares = [];
+        this._uncaughtExceptionHandler = null;
     }
 
     public withOptions(serverOptions: ServerOptions): ServerBuilder {
@@ -99,13 +105,36 @@ export class ServerBuilder {
         return this;
     }
 
+
+    public withUncaughtExceptionHandler(handler: any): ServerBuilder {
+        this._uncaughtExceptionHandler = handler;
+        return this;
+    }
+
+    public withBugsnag() {
+        if (config.get<boolean>("bugsnag.enable")) {
+            const bugsnag = require("bugsnag");
+            bugsnag.register(config.get<string>("bugsnag.api_key"), {
+                releaseStage: config.get<string>("bugsnag.release_stage")
+            });
+            this.withUncaughtExceptionHandler(bugsnag.restifyHandler);
+        }
+        return this;
+    }
+
+    public withMorgan() {
+        const morgan = require("morgan");
+        this.withMiddleWare(morgan(config.get<string>("morgan.format")));
+        return this;
+    }
+
     public build(): Server {
         let server = restify.createServer(this._serverOptions);
 
         if (!!this._bodyParser) {
             server.use(this._bodyParser);
         } else {
-            server.use(queryParser);
+            server.use(bodyParser);
         }
 
         if (!!this._charset) {
@@ -165,6 +194,10 @@ export class ServerBuilder {
                     server.use(this._middlewares[_middleware]);
                 }
             }
+        }
+
+        if (this._uncaughtExceptionHandler) {
+            server.on("uncaughtException", this._uncaughtExceptionHandler);
         }
 
         this._routerConfig.forEach((config: RouterConfig) => {

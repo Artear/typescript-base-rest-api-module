@@ -65,7 +65,7 @@ server.listen(port, function () {
 ```
 
 ### 4. Run your application!
-The API will be running at localhost:8282
+The API will be running at [http://localhost:8282](http://localhost:8282)
 
 ## Configure your application
 You can configure  your application using environment variables.

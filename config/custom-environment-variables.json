@@ -30,5 +30,13 @@
     "enable": "NEWRELIC_ENABLE",
     "license_key": "NEWRELIC_LICENSE_KEY",
     "app_name": "NEWRELIC_APP_NAME"
+  },
+  "morgan": {
+    "format": "MORGAN_FORMAT"
+  },
+  "bugsnag": {
+    "enable": "BUGSNAG_ENABLE",
+    "api_key": "BUGSNAG_API_KEY",
+    "release_stage": "BUGSNAG_RELEASE_STAGE"
   }
 }
