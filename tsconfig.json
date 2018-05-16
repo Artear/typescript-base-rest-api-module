@@ -13,12 +13,5 @@
     "node_modules",
     "examples",
     "tools/version-promote/scratch"
-  ],
-  "typeRoots": [
-    "./node_modules/@types",
-    "./src/types"
-  ],
-  "types": [
-    "restify"
   ]
 }
