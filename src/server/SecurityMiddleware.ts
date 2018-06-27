@@ -8,6 +8,6 @@ export const securityMiddleware = (req, res, next) => {
   next();
 }
 
-export const shouldValidateMethod = method => ["GET", "POST", "PUT", "PATCH", "DELETE"].includes(method);
+export const shouldValidateMethod = method => ["GET", "POST", "PUT", "PATCH", "DELETE"].indexOf(method) !== -1;
 
 export const tokenIsValid = token => !!token && config.get<string>("security.token") === token;
