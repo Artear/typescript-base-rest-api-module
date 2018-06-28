@@ -12,6 +12,7 @@
   "exclude": [
     "node_modules",
     "examples",
-    "tools/version-promote/scratch"
+    "tools/version-promote/scratch",
+    "dist"
   ]
 }
