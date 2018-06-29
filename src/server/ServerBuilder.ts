@@ -1,7 +1,7 @@
 import {RouterConfig} from "../router/BaseRouter";
 import * as restify from "restify";
 import {RequestHandler, Server, ServerOptions} from "restify";
-import {NotAuthorizedError} from "restify-errors";
+import { securityMiddleware } from "./SecurityMiddleware";
 import serverCharset from "./ServerCharset";
 import * as config from "config";
 import * as corsMiddleware from "restify-cors-middleware";
@@ -164,22 +164,7 @@ export class ServerBuilder {
         }
 
         if (yn(this._security)) {
-            server.use((req, res, next) => {
-
-                switch (req.method) {
-                    case "POST":
-                    case "PUT":
-                    case "DELETE":
-                    case "PATCH":
-                        let token = req.headers["authorization"];
-                        if (!(!!token && config.get<string>("security.token") === token)) {
-                            return res.send(new NotAuthorizedError("invalid Token"));
-                        }
-                        break;
-                }
-
-                next();
-            });
+            server.use(securityMiddleware);
         }
 
         if (this._cors) {
@@ -214,4 +199,5 @@ export class ServerBuilder {
 
         return server;
     }
+
 }
