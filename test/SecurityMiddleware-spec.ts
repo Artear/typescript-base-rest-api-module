@@ -5,6 +5,9 @@ const SecurityModule = require('../src/server/SecurityMiddleware');
 
 const mockRequest = {
   method: 'POST',
+  route: {
+    path: '/new_path'
+  },
   headers:
   {
     authorization: 'ABCD'
@@ -23,6 +26,12 @@ describe('Function test: securityMiddleware', () => {
 
   it('Should call next handler in chain if there is no need to validate method', done => {
     const shouldValidateMethodStub = sinon.stub(SecurityModule, 'shouldValidateMethod').callsFake( method => false );
+    SecurityModule.securityMiddleware( mockRequest, { send : () => {} }, () => done() );
+    shouldValidateMethodStub.restore();
+  })
+
+  it('Should call next handler in chain if there is no need to validate path', done => {
+    const shouldValidateMethodStub = sinon.stub(SecurityModule, 'shouldValidatePath').callsFake( path => false );
     SecurityModule.securityMiddleware( mockRequest, { send : () => {} }, () => done() );
     shouldValidateMethodStub.restore();
   })
@@ -50,6 +59,21 @@ describe('Function test: shouldValidateMethod', () => {
     chai.expect(SecurityModule.shouldValidateMethod('OPTIONS')).to.equal(false);
     chai.expect(SecurityModule.shouldValidateMethod('HEAD')).to.equal(false);
     chai.expect(SecurityModule.shouldValidateMethod('CONNECT')).to.equal(false);
+  });
+
+})
+
+
+describe('Function test: shouldValidatePath', () => {
+  it('Should require validation for some paths.', () => {
+    chai.expect(SecurityModule.shouldValidatePath('/article')).to.equal(true);
+    chai.expect(SecurityModule.shouldValidatePath('/media')).to.equal(true);
+    chai.expect(SecurityModule.shouldValidatePath('/cover')).to.equal(true);
+    chai.expect(SecurityModule.shouldValidatePath('/block')).to.equal(true);
+  });
+
+  it('Should not require validation for /ping path.', () => {
+    chai.expect(SecurityModule.shouldValidatePath('/ping')).to.equal(false);
   });
 
 })
