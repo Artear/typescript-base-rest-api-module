@@ -39,6 +39,7 @@ jobs:
         - restore_cache:
             keys:
               - dependency-cache-{{ checksum "package.json" }}
+        - run: npm install --only=dev
         - run: npm test
 
   build_dist:
