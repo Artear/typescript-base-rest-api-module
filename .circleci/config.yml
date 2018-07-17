@@ -23,10 +23,10 @@ jobs:
             - checkout-cache-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
       - restore_cache:
           keys:
-            - dependency-cache-v.8.11.2-{{ .Branch }}-{{ checksum "package.json" }}
+            - dependency-cache-v.8.11.2-{{ checksum "package.json" }}
       - run: npm install
       - save_cache:
-          key: dependency-cache-v.8.11.2-{{ .Branch }}-{{ checksum "package.json" }}
+          key: dependency-cache-v.8.11.2-{{ checksum "package.json" }}
           paths:
             - ~/app/node_modules
 
@@ -38,7 +38,7 @@ jobs:
               - checkout-cache-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
         - restore_cache:
             keys:
-              - dependency-cache-v.8.11.2-{{ .Branch }}-{{ checksum "package.json" }}
+              - dependency-cache-v.8.11.2-{{ checksum "package.json" }}
         - run: npm test
 
   build_dist:
@@ -49,7 +49,7 @@ jobs:
             - checkout-cache-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
       - restore_cache:
           keys:
-            - dependency-cache-v.8.11.2-{{ .Branch }}-{{ checksum "package.json" }}
+            - dependency-cache-v.8.11.2-{{ checksum "package.json" }}
 
       - run:
           name: Compile the build
