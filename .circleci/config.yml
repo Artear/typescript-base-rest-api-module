@@ -60,7 +60,11 @@ jobs:
           name: Make version file
           command: |
             if [ $CIRCLE_TAG ]; then echo $CIRCLE_TAG-$CIRCLE_SHA1 > ./_version.txt; fi
-
+      - run:
+          name: Remove dev dependencies
+          command: |
+            rm -Rf ./node_modules
+            npm install --production
       - run:
           name: Zip the Build
           command: |
@@ -69,7 +73,6 @@ jobs:
             tar --append --file=build.tar ./package.json
             tar --append --file=build.tar ./newrelic.js
             if [ $CIRCLE_TAG ]; then tar --append --file=build.tar ./_version.txt; fi
-            npm prune --production
             tar --append --file=build.tar ./node_modules --exclude='*.map' --exclude='test' --exclude='.git'
             gzip build.tar
       - store_artifacts:
