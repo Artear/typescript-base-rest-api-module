@@ -25,7 +25,7 @@ export class ServerBuilder {
     private _sanitizer: RequestHandler;
     private _queryParser: RequestHandler;
     private _charset: RequestHandler;
-    private _bodyParser: RequestHandler;
+    private _bodyParser: RequestHandler[];
     private _timeout: number;
     private _security: boolean;
     private _cors: boolean;
@@ -85,7 +85,7 @@ export class ServerBuilder {
         return this;
     }
 
-    public withBodyParser(bodyParser: RequestHandler) {
+    public withBodyParser(bodyParser: RequestHandler[]) {
         this._bodyParser = bodyParser;
         return this;
     }
