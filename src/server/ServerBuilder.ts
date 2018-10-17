@@ -168,7 +168,7 @@ export class ServerBuilder {
         }
 
         if (this._cors) {
-            const cors = corsMiddleware({"origins": ["*"]});
+            const cors = corsMiddleware({ "origins": ["*"], allowHeaders: ['authorization'] });
             server.pre(cors.preflight);
             server.use(cors.actual);
         }
