@@ -1,6 +1,6 @@
 {
   "name": "typescript_base_rest_api",
-  "version": "1.1.10",
+  "version": "1.1.11",
   "description": "",
   "main": "dist/index.js",
   "typings": "./dist/typescript-rest.d.ts",
