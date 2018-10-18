@@ -1,6 +1,6 @@
 {
   "name": "typescript_base_rest_api",
-  "version": "1.1.11",
+  "version": "1.1.12",
   "description": "",
   "main": "dist/index.js",
   "typings": "./dist/typescript-rest.d.ts",
@@ -82,7 +82,7 @@
   },
   "dependencies": {
     "aws-sdk": "^2.258.1",
-    "bugsnag": "^2.3.1",
+    "bugsnag": "^2.4.3",
     "config": "1.30.0",
     "debug": "^3.1.0",
     "elasticsearch": "^15.0.0",
@@ -111,7 +111,7 @@
     "type": "git",
     "url": "git+https://github.com/Artear/typescript-base-rest-api-module.git"
   },
-  "author": "Gabriel Fusca",
+  "author": "Artear",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/Artear/typescript-base-rest-api-module/issues"
