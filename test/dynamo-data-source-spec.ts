@@ -33,6 +33,10 @@ describe("DynamoDataSource Test", function () {
             }
         });
 
+        documentClientStub = sinon.stub(documentClient, "batchGet").callsFake(function (params, callback) {
+            callback(null, {Responses: {Block: [mockedBody]}});
+        });
+
         documentPutClientStub = sinon.stub(documentClient, "put").callsFake(function (params, callback) {
             callback(null, mockedBody);
         });
@@ -47,7 +51,7 @@ describe("DynamoDataSource Test", function () {
     it("Should receive fields to filter on DynamoDataSource", (done: Function) => {
         const key = "some_key";
         const fields = "itemId";
-        documentClientStub.restore();
+        sinon.restore(documentClient);
         documentClientStub = sinon.stub(documentClient, "get").callsFake(function (params: any, next: (err: any, data: any) => void) {
             expect(params["ProjectionExpression"]).to.be.equal(fields);
             done();
@@ -59,16 +63,16 @@ describe("DynamoDataSource Test", function () {
     it("Should get items by id", (done: Function) => {
         dataSource.getItems([mockedBody.itemId]).then(function (data) {
             chai.expect(data[0]).to.equal(mockedBody);
-            done();
         });
+        done();
     });
 
     it("PutData Should return item id inserted", (done: Function) => {
         dataSource = new DynamoDataSource();
         dataSource.putData(mockedBody.itemId, mockedBody).then(function (data) {
             chai.expect(data.itemId).to.equal(mockedBody.itemId);
-            done();
         });
+        done();
     });
 
     it("Updated Should return item id updated", (done: Function) => {
@@ -76,8 +80,8 @@ describe("DynamoDataSource Test", function () {
         mockedBody.content.title.main = "dummy title";
         dataSource.updateData(mockedBody.itemId, mockedBody).then(function (data) {
             chai.expect(data.itemId).to.equal(mockedBody.itemId);
-            done();
         });
+        done();
     });
 
     it("Should get exists items and exclude the failed", (done: Function) => {

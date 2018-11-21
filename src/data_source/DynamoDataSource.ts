@@ -50,17 +50,25 @@ export class DynamoDataSource implements DataSource {
     }
 
     getItems(keys: Array<string>, fields?: string): Promise<any> {
+        const params = {
+            RequestItems: {
+                [this.table]: {
+                    Keys: keys.map(key => ({ [this.keyName]: key }))
+                }
+            }
+        };
+
+        if (!!fields) {
+            params["RequestItems"][this.table]["ProjectionExpression"] = fields;
+        }
+
         return new Promise((resolve, reject) => {
-            let items = keys.map(
-                id => this.getData(id, fields).then((data) => {
-                        return data;
-                    }
-                ).catch((err) => {
-                    reject(new InternalServerError("Unable to get items, error", err));
-                })
-            );
-            Promise.all(items).then(function (articles) {
-                resolve(articles.filter(Boolean));
+            Connection.getInstance().batchGet(params, (err, data) => {
+                if (err) {
+                    reject(new InternalServerError("Unable to get items, error: " + err.message));
+                } else {
+                    resolve(data.Responses[this.table]);
+                }
             });
         });
     }
