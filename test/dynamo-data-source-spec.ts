@@ -90,7 +90,7 @@ describe("DynamoDataSource Test", function () {
         dataSource.getItems([mockedBody.itemId, invalidItem]).then(function (data) {
             chai.expect(data[0]).to.equal(mockedBody);
             chai.expect(data.length).equal(1);
-            done();
         });
+        done();
     });
 });
