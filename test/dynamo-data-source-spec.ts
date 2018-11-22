@@ -54,7 +54,9 @@ describe("DynamoDataSource CRUD Test", function () {
         dataSource = new DynamoDataSource();
         documentClient = new DocumentClient();
         const tableName = "Block";
+        const keyName = "itemId";
         dataSource['table'] = tableName;
+        dataSource['keyName'] = keyName;
 
         connectionStub = sinon.stub(Connection, "getInstance").callsFake(function () {
             return documentClient;
