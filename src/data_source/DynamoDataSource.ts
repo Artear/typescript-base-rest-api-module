@@ -67,8 +67,7 @@ export class DynamoDataSource implements DataSource {
                 if (err) {
                     reject(new InternalServerError("Unable to get items, error: " + err.message));
                 } else {
-                    const ordered = keys.map(key => data.Responses[this.table].find(row => row.id === key));
-                    resolve(ordered);
+                    resolve(data.Responses[this.table]);
                 }
             });
         });
