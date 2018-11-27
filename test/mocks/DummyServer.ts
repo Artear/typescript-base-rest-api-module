@@ -8,7 +8,6 @@ import {ServerRouterConfig} from "../../src/server/ServerRouterConfig";
 
 export let server: Server = new ServerBuilder(new ServerRouterConfig())
     .withTimeout(config.get<number>("server.options.timeout"))
-    .withSecurity(config.get<boolean>("security.enable"))
     .withRouter(new DummyRouter(config.get<string>("server.options.defaultApiVersion")))
     .withCORS(true)
     .build();

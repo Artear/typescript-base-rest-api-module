@@ -9,7 +9,7 @@ This library only works with typescript. Ensure it is installed:
 ```
 npm install typescript -g
 ```
-To install typescript base rest api: 
+To install typescript base rest api:
 
 ```
 npm i typescript_base_rest_api
@@ -51,7 +51,6 @@ export let server: Server = new ServerBuilder()
     .withTimeout(config.get<number>("server.options.timeout"))
     .withOptions(options)
     .withQueryParser(queryParser())
-    .withSecurity(config.get<boolean>("security.enable"))
     .withRouter(new PingRouter())
     .withRouter(new ItemRouter())
     .withCORS(false)

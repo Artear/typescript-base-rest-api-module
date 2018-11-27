@@ -1,7 +1,6 @@
 import {RouterConfig} from "../router/BaseRouter";
 import * as restify from "restify";
 import {RequestHandler, Server, ServerOptions} from "restify";
-import { securityMiddleware } from "./SecurityMiddleware";
 import serverCharset from "./ServerCharset";
 import * as config from "config";
 import * as corsMiddleware from "restify-cors-middleware";
@@ -27,7 +26,6 @@ export class ServerBuilder {
     private _charset: RequestHandler;
     private _bodyParser: RequestHandler[];
     private _timeout: number;
-    private _security: boolean;
     private _cors: boolean;
     private _middlewares: RequestHandler[];
     private _uncaughtExceptionHandler: any;
@@ -41,7 +39,6 @@ export class ServerBuilder {
         this._charset = null;
         this._bodyParser = null;
         this._timeout = null;
-        this._security = false;
         this._cors = true;
         this._middlewares = [];
         this._uncaughtExceptionHandler = null;
@@ -49,11 +46,6 @@ export class ServerBuilder {
 
     public withOptions(serverOptions: ServerOptions): ServerBuilder {
         this._serverOptions = serverOptions;
-        return this;
-    }
-
-    public withSecurity(security: boolean): ServerBuilder {
-        this._security = security;
         return this;
     }
 
@@ -161,10 +153,6 @@ export class ServerBuilder {
                 req.connection.setTimeout(timeout);
                 next();
             });
-        }
-
-        if (yn(this._security)) {
-            server.use(securityMiddleware);
         }
 
         if (this._cors) {
