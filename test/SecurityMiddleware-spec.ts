@@ -1,7 +1,7 @@
 import * as sinon from "sinon";
 import {expect} from "chai";
 import {NotAuthorizedError} from "restify-errors";
-import {shouldValidateMethod, tokenIsValid} from "../src/server/SecurityMiddleware";
+import {tokenIsValid} from "../src/server/SecurityMiddleware";
 const SecurityModule = require("../src/server/SecurityMiddleware");
 
 describe("Function test: withSecurity", () => {
@@ -15,50 +15,42 @@ describe("Function test: withSecurity", () => {
       sandbox.restore();
   });
 
-  it("Should call next handler in chain if token is valid", async(done) => {
-    sandbox.stub(SecurityModule, "shouldValidateMethod").callsFake( method => true );
+  it("Should call next handler in chain if token is valid", done => {
     sandbox.stub(SecurityModule, "tokenIsValid").callsFake( token => true );
 
+    const req = { headers: {}};
+    const res = {};
+    
+    
     const fakeMiddleware = sinon.stub();
-    const req = {method: "GET"};
-    const res = {headers: {authorization: "token"}};
-    //const fakeMiddleware = sinon.stub(obj, "req");
-
     const stub = sinon.stub();
     stub.returns(fakeMiddleware);
 
-    await SecurityModule.withSecurity("token")(stub)();
-    await expect(fakeMiddleware.calledOnce).to.equal(true);
-    await done();
+    SecurityModule.withSecurity("token")(stub)(req, res);
+    expect(stub.calledOnce).to.equal(true);
+    done();
   });
 
-  /*it("Should call next handler in chain if there is no need to validate method", done => {
-    sandbox.stub(SecurityModule, "shouldValidateMethod").callsFake( method => false );
-    SecurityModule.withSecurity("token")(done());
-  });
-
-  it("Should call send with Error is token is not valid", done => {
-    sandbox.stub(SecurityModule, "shouldValidateMethod").callsFake( method => true );
+  it("Should call next handler in chain if token is valid", done => {
     sandbox.stub(SecurityModule, "tokenIsValid").callsFake( token => false );
-    expect(SecurityModule.withSecurity("token")(done())).to.equal(NotAuthorizedError);
-  });*/
-});
 
-/*describe("Function test: shouldValidateMethod", () => {
-  it("Should require validation for some methods.", () => {
-    expect(shouldValidateMethod("GET")).to.equal(true);
-    expect(shouldValidateMethod("POST")).to.equal(true);
-    expect(shouldValidateMethod("PUT")).to.equal(true);
-    expect(shouldValidateMethod("PATCH")).to.equal(true);
-    expect(shouldValidateMethod("DELETE")).to.equal(true);
+    const req = { headers: {}};
+    const res = { send: sinon.stub()};
+    
+    
+    const fakeMiddleware = sinon.stub();
+    const stub = sinon.stub();
+    stub.returns(fakeMiddleware);
+    
+    SecurityModule.withSecurity("token")(stub)(req, res)
+    expect(res.send.calledOnce).to.equal(true);
+    const errArg = res.send.firstCall.args[0];
+    expect(errArg).to.be.instanceof(NotAuthorizedError);
+    expect(errArg.message).to.equal("invalid Token");
+    
+    done();
   });
-
-  it("Should not require validation for some methods.", () => {
-    expect(shouldValidateMethod("OPTIONS")).to.equal(false);
-    expect(shouldValidateMethod("HEAD")).to.equal(false);
-    expect(shouldValidateMethod("CONNECT")).to.equal(false);
-  });
-
+  
 });
 
 describe("Function test: tokenIsValid", () => {
@@ -77,4 +69,4 @@ describe("Function test: tokenIsValid", () => {
     expect(tokenIsValid(token, "")).to.equal(false);
   });
 
-});*/
+});
