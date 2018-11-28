@@ -20,13 +20,15 @@ describe("Function test: withSecurity", () => {
 
     const req = { headers: {}};
     const res = {};
+    const next = {};
 
     const fakeMiddleware = sinon.stub();
-    const stub = sinon.stub();
-    stub.returns(fakeMiddleware);
 
-    SecurityModule.withSecurity("token")(stub)(req, res);
-    expect(stub.calledOnce).to.equal(true);
+    SecurityModule.withSecurity("token")(fakeMiddleware)(req, res, next);
+    expect(fakeMiddleware.calledOnce).to.equal(true);
+    expect(fakeMiddleware.firstCall.args[0]).to.equal(req);
+    expect(fakeMiddleware.firstCall.args[1]).to.equal(res);
+    expect(fakeMiddleware.firstCall.args[2]).to.equal(next);
     done();
   });
 
@@ -35,12 +37,11 @@ describe("Function test: withSecurity", () => {
 
     const req = { headers: {}};
     const res = { send: sinon.stub()};
+    const next = {};
 
     const fakeMiddleware = sinon.stub();
-    const stub = sinon.stub();
-    stub.returns(fakeMiddleware);
 
-    SecurityModule.withSecurity("token")(stub)(req, res);
+    SecurityModule.withSecurity("token")(fakeMiddleware)(req, res, next);
 
     expect(res.send.calledOnce).to.equal(true);
 
