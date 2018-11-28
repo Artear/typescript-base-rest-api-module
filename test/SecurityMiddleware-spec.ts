@@ -20,8 +20,7 @@ describe("Function test: withSecurity", () => {
 
     const req = { headers: {}};
     const res = {};
-    
-    
+
     const fakeMiddleware = sinon.stub();
     const stub = sinon.stub();
     stub.returns(fakeMiddleware);
@@ -31,26 +30,27 @@ describe("Function test: withSecurity", () => {
     done();
   });
 
-  it("Should call next handler in chain if token is valid", done => {
+  it("Should call send with Error if token is not valid", done => {
     sandbox.stub(SecurityModule, "tokenIsValid").callsFake( token => false );
 
     const req = { headers: {}};
     const res = { send: sinon.stub()};
-    
-    
+
     const fakeMiddleware = sinon.stub();
     const stub = sinon.stub();
     stub.returns(fakeMiddleware);
-    
-    SecurityModule.withSecurity("token")(stub)(req, res)
+
+    SecurityModule.withSecurity("token")(stub)(req, res);
+
     expect(res.send.calledOnce).to.equal(true);
-    const errArg = res.send.firstCall.args[0];
-    expect(errArg).to.be.instanceof(NotAuthorizedError);
-    expect(errArg.message).to.equal("invalid Token");
-    
+
+    const error = res.send.firstCall.args[0];
+
+    expect(error).to.be.instanceof(NotAuthorizedError);
+    expect(error.message).to.equal("invalid Token");
+
     done();
   });
-  
 });
 
 describe("Function test: tokenIsValid", () => {
