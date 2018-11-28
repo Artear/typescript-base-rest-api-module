@@ -51,3 +51,5 @@ export {OptionsBuilder} from "./src/server/OptionsBuilder";
 export {RouterListBuilder} from "./src/router/RouterListBuilder";
 
 export {ServerRouterConfig} from "./src/server/ServerRouterConfig";
+
+export { withSecurity } from './src/server/SecurityMiddleware';
