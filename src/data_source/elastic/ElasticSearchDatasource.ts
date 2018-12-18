@@ -55,4 +55,8 @@ export class ElasticSearchDataSource implements DataSource {
             q: query
         };
     }
+
+    deleteItem(key: string): Promise<any> {
+        return Promise.reject(new Error('Method not implemented'));
+    }
 }
