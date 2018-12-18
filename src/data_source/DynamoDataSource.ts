@@ -94,4 +94,16 @@ export class DynamoDataSource implements DataSource {
     searchData(query: Object): Promise<any> {
         return new Promise((resolve, reject) => resolve(null));
     }
+
+    deleteItem(key: string): Promise<any> {
+        return new Promise((resolve, reject) => {
+            Connection.getInstance().delete('key', (err, data) => {
+                if (err) reject(new NotFoundError(err));
+                else resolve(data);
+            });
+
+        }
+        
+
+    }
 }

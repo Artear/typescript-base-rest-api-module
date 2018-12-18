@@ -9,4 +9,6 @@ export declare interface DataSource {
     updateData(key: string, value: Object): Promise<any>;
 
     searchData(query: any): Promise<any>;
+
+    deleteItem(key: string): Promise<any>;
 }

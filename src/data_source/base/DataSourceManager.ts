@@ -169,4 +169,20 @@ export class DataSourceManager {
             }
         });
     }
+
+    public deleteItem(key: string): Promise<any> {
+        return new Promise((resolve, reject) => {
+            let dataSource = this.dataSources[0];
+            dataSource.deleteItem(key).then((data) => {
+                if (!!data) {
+                    resolve(data);
+                }
+            }).catch((err) => {
+                LoggerHelper.getDefaultHandler().error(err.message);
+                reject(err);
+            });
+        });
+
+
+    }
 }
