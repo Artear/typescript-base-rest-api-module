@@ -96,14 +96,17 @@ export class DynamoDataSource implements DataSource {
     }
 
     deleteItem(key: string): Promise<any> {
+        const params = {
+            TableName: this.table,
+            Key: {}
+        };
+        params.Key[this.keyName] = key;
+
         return new Promise((resolve, reject) => {
-            Connection.getInstance().delete('key', (err, data) => {
+            Connection.getInstance().delete(params, (err, data) => {
                 if (err) reject(new NotFoundError(err));
                 else resolve(data);
             });
-
-        }
-        
-
+        })
     }
 }
