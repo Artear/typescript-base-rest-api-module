@@ -48,6 +48,7 @@ describe("DynamoDataSource CRUD Test", function () {
     let dataSource: DynamoDataSource;
     let mockedBody;
     let documentClient;
+    const mockedCorrectDelete = { deleted : true };
 
     beforeEach(() => {
         mockedBody = mockLoader(itemMock);
@@ -73,6 +74,10 @@ describe("DynamoDataSource CRUD Test", function () {
         documentClientStub = sinon.stub(documentClient, "batchGet").callsFake(function (params, callback) {
             callback(null, {Responses: {[tableName]: [mockedBody]}});
         });
+        
+        documentClientStub = sinon.stub(documentClient, "delete").callsFake(function (params, callback) {
+            callback(null, mockedCorrectDelete);
+        });
 
         documentPutClientStub = sinon.stub(documentClient, "put").callsFake(function (params, callback) {
             callback(null, mockedBody);
@@ -91,7 +96,7 @@ describe("DynamoDataSource CRUD Test", function () {
             done();
         });
     });
-
+    
     it("PutData Should return item id inserted", (done: Function) => {
         dataSource.putData(mockedBody.itemId, mockedBody).then(function (data) {
             chai.expect(data.itemId).to.equal(mockedBody.itemId);
@@ -114,6 +119,12 @@ describe("DynamoDataSource CRUD Test", function () {
             chai.expect(data[0]).to.equal(mockedBody);
             chai.expect(data.length).equal(1);
             done();
+        });
+    });
+
+    it("Should delete item by id", () => {
+        dataSource.deleteItem(mockedBody.itemId).then( (data) => {
+            chai.expect(data).to.equal(mockedCorrectDelete);
         });
     });
 });
