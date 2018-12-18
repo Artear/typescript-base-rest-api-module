@@ -54,6 +54,12 @@ class DummySource implements DataSource {
         return new Promise((resolve, reject) => resolve(null));
     }
 
+    deleteItem(key: string): Promise<any> {
+        return new Promise((resolve) => {
+            this.values.remove(key);
+            resolve(true);
+        });
+    }
 }
 
 describe("DataSourceManager Test", function () {
@@ -304,6 +310,24 @@ describe("DataSourceManager Test", function () {
             });
         });
         new DataSourceManager(mainSource, elastic).searchData("TN-").then((data) => {
+            done();
+        });
+    });
+
+    it("Should delete data from a Data Source", (done: Function) => {
+        const key = "dummy_key";
+        const dummySource = new DummySource();
+        const dummyDeleteResponse = "dummy_source_response";
+
+        sinon.stub(dummySource, "deleteItem").callsFake(function (key: string) {
+            return new Promise((resolve) => {
+                resolve(dummyDeleteResponse);
+            });
+        });
+
+        let manager: DataSourceManager = new DataSourceManager(dummySource);
+        manager.deleteItem(key).then((data) => {
+            expect(data).to.be.equal(dummyDeleteResponse);
             done();
         });
     });

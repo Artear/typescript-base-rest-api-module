@@ -22,7 +22,7 @@ export class DataSourceManager {
 
     public putData(key: string, value: Object): Promise<any> {
         return new Promise((resolve, reject) => {
-            let dataSource = this.dataSources[0];
+            const dataSource = this.dataSources[0];
             if (!!dataSource) {
                 dataSource.putData(key, value).then((data) => {
                     if (!!data) {
@@ -45,7 +45,7 @@ export class DataSourceManager {
 
     public updateData(key: string, value: Object): Promise<any> {
         return new Promise((resolve, reject) => {
-            let dataSource = this.dataSources[0];
+            const dataSource = this.dataSources[0];
             dataSource.updateData(key, value).then((data) => {
                 if (!!data) {
                     resolve(data);
@@ -172,7 +172,7 @@ export class DataSourceManager {
 
     public deleteItem(key: string): Promise<any> {
         return new Promise((resolve, reject) => {
-            let dataSource = this.dataSources[0];
+            const dataSource = this.dataSources[0];
             dataSource.deleteItem(key).then((data) => {
                 if (!!data) {
                     resolve(data);
