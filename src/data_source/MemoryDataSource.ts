@@ -51,4 +51,8 @@ export class MemoryDataSource implements DataSource {
         console.log("searcg data");
         return new Promise((resolve, reject) => resolve(null));
     }
+
+    deleteItem(key: string): Promise<any> {
+        return Promise.reject(new Error('Method not implemented'));
+    }
 }
