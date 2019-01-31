@@ -2,6 +2,8 @@ import {DataSource} from "./base/DataSource";
 import {Connection} from "./dynamo/Connection";
 import {InternalServerError, NotFoundError} from "restify-errors";
 import * as config from "config";
+import * as chunk from "lodash.chunk";
+import * as flatten from "lodash.flatten";
 
 export class DynamoDataSource implements DataSource {
 
@@ -50,27 +52,41 @@ export class DynamoDataSource implements DataSource {
     }
 
     getItems(keys: Array<string>, fields?: string): Promise<any> {
-        const params = {
-            RequestItems: {
-                [this.table]: {
-                    Keys: keys.map(key => ({ [this.keyName]: key }))
+        return new Promise((resolveItems, rejectItems) => {
+            const chunks = chunk(keys, 100);
+            const chunksLength = chunks.length;
+            const promises = [];
+
+            for (let i = 0; i < chunksLength; i++) {
+                const params = {
+                    RequestItems: {
+                        [this.table]: {
+                            Keys: chunks[i].map(key => ({ [this.keyName]: key }))
+                        }
+                    }
+                };
+
+                if (!!fields) {
+                    params["RequestItems"][this.table]["ProjectionExpression"] = fields;
                 }
+
+                promises.push(
+                    new Promise((resolve, reject) => {
+                        Connection.getInstance().batchGet(params, (err, data) => {
+                            if (err) {
+                                rejectItems(new InternalServerError("Unable to get items, error: " + err.message));
+                            }
+                            else {
+                                const ordered = keys.map(key => data.Responses[this.table].find(row => row[this.keyName] === key)).filter( key => key);
+                                resolve(ordered);
+                            }
+                        });
+                    })
+                );
             }
-        };
 
-        if (!!fields) {
-            params["RequestItems"][this.table]["ProjectionExpression"] = fields;
-        }
-
-        return new Promise((resolve, reject) => {
-            Connection.getInstance().batchGet(params, (err, data) => {
-                if (err) {
-                    reject(new InternalServerError("Unable to get items, error: " + err.message));
-                } else {
-                    const ordered = keys.map(key => data.Responses[this.table].find(row => row[this.keyName] === key))
-                                        .filter( key => key);
-                    resolve(ordered);
-                }
+            Promise.all(promises).then(values => {
+                resolveItems(flatten(values));
             });
         });
     }
