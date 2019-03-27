@@ -56,6 +56,20 @@ export class DataSourceManager {
             });
         });
     }
+    
+    public updateDataWithExpression(key: string, Item: Object, ConditionExpression: string, ExpressionAttributeValues: Object): Promise<any> {
+        return new Promise((resolve, reject) => {
+            const dataSource = this.dataSources[0];
+            dataSource.updateDataWithExpression(key, Item, ConditionExpression, ExpressionAttributeValues).then((data) => {
+                if (!!data) {
+                    resolve(data);
+                }
+            }).catch((err) => {
+                LoggerHelper.getDefaultHandler().error(err.message);
+                reject(err);
+            });
+        });
+    }
 
     private internal_get_data(index: number, key: string, fields?: string): Promise<any> {
         let dataSource = this.dataSources[index];
