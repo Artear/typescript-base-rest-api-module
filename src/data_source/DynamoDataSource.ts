@@ -107,6 +107,24 @@ export class DynamoDataSource implements DataSource {
         });
     }
 
+    updateDataWithExpression(key: string, Item: Object, ConditionExpression: string, ExpressionAttributeValues: Object): Promise<any> {
+        const params = {
+            TableName: this.table,
+            Key:{
+                [this.keyName] : key
+            },
+            Item,
+            ExpressionAttributeValues,
+            ConditionExpression
+        };
+        return new Promise( (resolve, reject) => {
+            Connection.getInstance().update(
+                params,
+                (err, data) => err ? reject(err) : resolve(data)
+            );
+        });
+    }
+
     searchData(query: Object): Promise<any> {
         return new Promise((resolve, reject) => resolve(null));
     }
