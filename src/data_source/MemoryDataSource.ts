@@ -43,6 +43,10 @@ export class MemoryDataSource implements DataSource {
         });
     }
 
+    updateDataWithExpression(key: string, Item: Object, ConditionExpression: string, ExpressionAttributeValues: Object): Promise<any> {
+        throw new InternalServerError("Can not update item to a memory datasource");
+    }
+
     updateData(key: string, value: Object): Promise<any> {
         throw new InternalServerError("Can not update item to a memory datasource");
     }

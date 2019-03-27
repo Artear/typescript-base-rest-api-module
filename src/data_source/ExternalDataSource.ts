@@ -95,6 +95,10 @@ export class ExternalDataSource implements DataSource {
         });
     }
 
+    updateDataWithExpression(key: string, Item: Object, ConditionExpression: string, ExpressionAttributeValues: Object): Promise<any> {
+        return Promise.reject(new Error('Method not implemented'));
+    }
+    
     searchData(query: Object): Promise<any> {
         return new Promise((resolve, reject) => resolve(null));
     }
