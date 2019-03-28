@@ -116,7 +116,7 @@ export class DynamoDataSource implements DataSource {
             Item,
             ExpressionAttributeValues,
             ConditionExpression,
-            ReturnValues: "UPDATED_NEW"
+            ReturnValues: "ALL_NEW"
         };
         return new Promise( (resolve, reject) => {
             Connection.getInstance().update(
