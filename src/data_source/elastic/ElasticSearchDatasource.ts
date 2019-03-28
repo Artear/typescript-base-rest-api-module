@@ -31,7 +31,7 @@ export class ElasticSearchDataSource implements DataSource {
         return new Promise(resolve => resolve(null));
     }
 
-    updateDataWithExpression(key: string, Item: Object, ConditionExpression: string, ExpressionAttributeValues: Object): Promise<any> {
+    updateDataRaw(params: any): Promise<any> {
         return Promise.reject(new Error('Method not implemented'));
     }
 
