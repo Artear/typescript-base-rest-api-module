@@ -42,7 +42,7 @@ class DummySource implements DataSource {
         });
     }
 
-    updateDataWithExpression(key: string, Item: Object, ConditionExpression: string, ExpressionAttributeValues: Object): Promise<any> {
+    updateDataRaw(params: any): Promise<any> {
         return;
     }
 

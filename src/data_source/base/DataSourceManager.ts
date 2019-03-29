@@ -57,10 +57,10 @@ export class DataSourceManager {
         });
     }
     
-    public updateDataWithExpression(key: string, Item: Object, ConditionExpression: string, ExpressionAttributeValues: Object): Promise<any> {
+    public updateDataRaw(params: any): Promise<any> {
         return new Promise((resolve, reject) => {
             const dataSource = this.dataSources[0];
-            dataSource.updateDataWithExpression(key, Item, ConditionExpression, ExpressionAttributeValues).then((data) => {
+            dataSource.updateDataRaw(params).then((data) => {
                 if (!!data) {
                     resolve(data);
                 }
