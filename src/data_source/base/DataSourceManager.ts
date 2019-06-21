@@ -124,7 +124,7 @@ export class DataSourceManager {
                         });
                     }
                 }).catch((err) => {
-                    if (!!items) {
+                    if (!!items.length) {
                         LoggerHelper.getDefaultHandler().warn(`Some items fail from: ${keys}`);
                         resolve(items);
                     }
