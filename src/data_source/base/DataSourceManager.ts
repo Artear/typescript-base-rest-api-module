@@ -16,8 +16,8 @@ export class DataSourceManager {
         }
     }
 
-    public getData(key: string, fields?: string): Promise<any> {
-        return this.internal_get_data(0, key, fields);
+    public getData(key: string, fields?: string, options: Object = {}): Promise<any> {
+        return this.internal_get_data(0, key, fields, options);
     }
 
     public putData(key: string, value: Object): Promise<any> {
@@ -39,8 +39,8 @@ export class DataSourceManager {
         });
     }
 
-    public getItems(keys: Array<string>, fields?: string): Promise<any> {
-        return this.internal_get_list(0, keys, fields);
+    public getItems(keys: Array<string>, fields?: string, options: Object = {}): Promise<any> {
+        return this.internal_get_list(0, keys, fields, [], options);
     }
 
     public updateData(key: string, value: Object): Promise<any> {
@@ -71,11 +71,11 @@ export class DataSourceManager {
         });
     }
 
-    private internal_get_data(index: number, key: string, fields?: string): Promise<any> {
+    private internal_get_data(index: number, key: string, fields?: string, options: Object = {}): Promise<any> {
         let dataSource = this.dataSources[index];
         return new Promise((resolve, reject) => {
             if (!!dataSource) {
-                dataSource.getData(key, fields).then((data) => {
+                dataSource.getData(key, fields, options).then((data) => {
                     if (!!data) {
                         if (index > 0) {
                             // update the main source
@@ -85,7 +85,7 @@ export class DataSourceManager {
                     } else {
                         // if the main source doesn't have data, update it with the next source
                         index++;
-                        this.internal_get_data(index, key, fields).then((data) => {
+                        this.internal_get_data(index, key, fields, options).then((data) => {
                             resolve(data);
                         }).catch((err) => {
                             LoggerHelper.getDefaultHandler().error(err.message);
@@ -102,11 +102,11 @@ export class DataSourceManager {
         });
     }
 
-    private internal_get_list(index: number, keys: Array<string>, fields: string, items?: Array<any>): Promise<any> {
+    private internal_get_list(index: number, keys: Array<string>, fields: string, items?: Array<any>, options: Object = {}): Promise<any> {
         let dataSource = this.dataSources[index];
         return new Promise((resolve, reject) => {
             if (!!dataSource) {
-                dataSource.getItems(keys, fields).then((data) => {
+                dataSource.getItems(keys, fields, options).then((data) => {
                     // if we dont find all the keys we fetch the next datasource
                     if (!!data && data.length === keys.length) {
                         if (index > 0) {
@@ -116,7 +116,7 @@ export class DataSourceManager {
                         resolve(data);
                     } else {
                         index++;
-                        this.internal_get_list(index, keys, fields, data).then((data) => {
+                        this.internal_get_list(index, keys, fields, data, options).then((data) => {
                             resolve(data);
                         }).catch((err) => {
                             LoggerHelper.getDefaultHandler().error(err.message);

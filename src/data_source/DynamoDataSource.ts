@@ -10,7 +10,7 @@ export class DynamoDataSource implements DataSource {
     private table: string = config.get<string>("aws.dynamodb.tableName");
     private keyName: string = config.get<string>("aws.dynamodb.keyName");
 
-    getData(key: string, fields?: string): Promise<any> {
+    getData(key: string, fields?: string, options: Object = {}): Promise<any> {
         const params = {
             TableName: this.table,
             Key: {}
@@ -20,6 +20,8 @@ export class DynamoDataSource implements DataSource {
         if (!!fields) {
             params["ProjectionExpression"] = fields;
         }
+
+        Object.assign(params, options);
 
         return new Promise((resolve, reject) => {
             Connection.getInstance().get(params, (err, data) => {
@@ -51,7 +53,7 @@ export class DynamoDataSource implements DataSource {
         });
     }
 
-    getItems(keys: Array<string>, fields?: string): Promise<any> {
+    getItems(keys: Array<string>, fields?: string, options: Object = {}): Promise<any> {
         return new Promise((resolveItems, rejectItems) => {
             const chunks = chunk(keys, 100);
             const chunksLength = chunks.length;
@@ -69,6 +71,8 @@ export class DynamoDataSource implements DataSource {
                 if (!!fields) {
                     params["RequestItems"][this.table]["ProjectionExpression"] = fields;
                 }
+
+                Object.assign(params, options);
 
                 promises.push(
                     new Promise((resolve, reject) => {
